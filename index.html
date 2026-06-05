@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Duy Quang | Matcha Cute Profile</title>
+    <meta name="description"
+        content="Trang web Profile cá nhân phong cách Matcha Cute của Nguyễn Duy Quang (Quang có Gờ). Trưng bày Mascot 3D, kỹ năng và thành tựu lập trình.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesque:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Background Cute Orbs -->
+    <div class="cute-bg">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-accent">🍵</span>QUANG CO GO
+        </div>
+        <div class="status-badge">
+            <span class="pulse-dot"></span>
+            <span class="status-text">Đà Nẵng • AI & Web Dev</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#hero">Giới thiệu</a>
+            <a href="#gallery-cute">Thành tựu</a>
+            <a href="#matcha-game">Tiệm Matcha</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero & Skills Combined Section -->
+        <section id="hero" class="hero-section">
+            <div class="container hero-container">
+                <!-- Text and Skills Side -->
+                <div class="hero-text-side">
+                    <h1 class="hero-title">NGUYỄN DUY QUANG</h1>
+                    <p class="hero-nickname">
+                        Biệt danh: <span class="cute-highlight">Quang có Gờ</span>
+                    </p>
+                    <p class="hero-subtitle">
+                        Mình là học sinh THPT tại Đà Nẵng, chuyên nghiên cứu về <strong>Training AI</strong>, lập trình
+                        <strong>React</strong>, hệ thống <strong>Backend</strong> và cơ sở dữ liệu <strong>SQL</strong>.
+                    </p>
+
+                    <!-- Compact Social Contact Circles (Sharp Brand Logos!) -->
+                    <div class="contact-row-cute">
+                        <a href="https://www.facebook.com/NgDoQ" target="_blank" class="contact-circle-btn card-fb" title="Facebook">
+                            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook">
+                        </a>
+                        <a href="https://www.instagram.com/quangcogo0406/" target="_blank" class="contact-circle-btn card-ig" title="Instagram">
+                            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram">
+                        </a>
+                        <a href="https://github.com/Wothing0406" target="_blank" class="contact-circle-btn card-gh" title="GitHub">
+                            <img src="https://img.icons8.com/color/48/github.png" alt="GitHub">
+                        </a>
+                        <a href="mailto:poiairo4628@gmail.com" class="contact-circle-btn card-mail" title="Gmail">
+                            <img src="https://img.icons8.com/color/48/gmail-new.png" alt="Gmail">
+                        </a>
+                        <a href="tel:0795277227" class="contact-circle-btn card-phone" title="Điện thoại">
+                            <img src="https://img.icons8.com/color/48/phone.png" alt="Điện thoại">
+                        </a>
+                    </div>
+
+                    <!-- Skills Showcase Dashboard directly in Hero (wow recruiters first!) -->
+                    <div class="skills-dashboard-cute">
+                        <h3>NĂNG LỰC CỐT LÕI</h3>
+                        <div class="skills-list-cute">
+                            <div class="skill-item-cute">
+                                <div class="skill-label-cute">
+                                    <span>🤖 Training AI / Machine Learning</span>
+                                    <strong>90%</strong>
+                                </div>
+                                <div class="progress-track-cute">
+                                    <div class="progress-bar-cute" style="width: 90%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item-cute">
+                                <div class="skill-label-cute">
+                                    <span>⚛️ Frontend React & UI Development</span>
+                                    <strong>85%</strong>
+                                </div>
+                                <div class="progress-track-cute">
+                                    <div class="progress-bar-cute" style="width: 85%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item-cute">
+                                <div class="skill-label-cute">
+                                    <span>⚙️ Backend API & Systems (Node.js/Python)</span>
+                                    <strong>80%</strong>
+                                </div>
+                                <div class="progress-track-cute">
+                                    <div class="progress-bar-cute" style="width: 80%"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item-cute">
+                                <div class="skill-label-cute">
+                                    <span>🗄️ Database & SQL optimization</span>
+                                    <strong>80%</strong>
+                                </div>
+                                <div class="progress-track-cute">
+                                    <div class="progress-bar-cute" style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Mascot & Clickable Floating 3D Logos Side -->
+                <div class="hero-mascot-side">
+                    <div class="mascot-box">
+                        <div id="mascot-canvas-container"></div>
+                        <div class="mascot-speech-bubble">
+                            <span id="speech-text">Chào bạn! Click vào các logo 3D bay xung quanh mình để tương tác nhé!
+                                🐻🍵</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements Section (Cute 2D Polaroid Grid) -->
+        <section id="gallery-cute" class="gallery-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">THÀNH TỰU & CHỨNG NHẬN</h2>
+                    <p class="section-desc">Những chứng nhận ghi nhận nỗ lực nghiên cứu khoa học kỹ thuật và lập trình.
+                    </p>
+                </div>
+
+                <div class="certs-grid">
+                    <!-- Cert 1 -->
+                    <div class="cert-card glassmorphism" data-index="0">
+                        <div class="cert-img-wrapper">
+                            <img src="img/vinhdanh2026.jpg" alt="Vinh danh 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-gold">Vinh danh</span>
+                            <h3 class="cert-title">Vinh danh thành tích học tập xuất sắc 2026</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 2 -->
+                    <div class="cert-card glassmorphism" data-index="1">
+                        <div class="cert-img-wrapper">
+                            <img src="img/nhatsteam2026.jpg" alt="Nhất STEM 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-first">Giải Nhất</span>
+                            <h3 class="cert-title">Giải Nhất STEM KHKT cấp trường 2026</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 3 -->
+                    <div class="cert-card glassmorphism" data-index="2">
+                        <div class="cert-img-wrapper">
+                            <img src="img/khuyenkhichkhktcaptinh.jpg" alt="KK KHKT 2025">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-kk">Giải KK</span>
+                            <h3 class="cert-title">Giải Khuyến khích KHKT cấp trường năm 2025</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 4 -->
+                    <div class="cert-card glassmorphism" data-index="3">
+                        <div class="cert-img-wrapper">
+                            <img src="img/giaibakhktcaptp2026.jpg" alt="Ba KHKT 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-third">Giải Ba</span>
+                            <h3 class="cert-title">Giải Ba KHKT cấp thành phố Đà Nẵng 2026</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 5 -->
+                    <div class="cert-card glassmorphism" data-index="4">
+                        <div class="cert-img-wrapper">
+                            <img src="img/khuyenkhichhsgtinhoc2026.jpg" alt="KK HSG Tin 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-kk">Giải KK</span>
+                            <h3 class="cert-title">Giải Khuyến khích HSG Tin học cấp trường 2026</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 6 -->
+                    <div class="cert-card glassmorphism" data-index="5">
+                        <div class="cert-img-wrapper">
+                            <img src="img/giaibacuocthiAI.jpg" alt="Ba AI Challenge 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-third">Giải Ba AI</span>
+                            <h3 class="cert-title">Giải Ba Hội An Tây AI Challenge 2026</h3>
+                        </div>
+                    </div>
+                    <!-- Cert 7 -->
+                    <div class="cert-card glassmorphism" data-index="6">
+                        <div class="cert-img-wrapper">
+                            <img src="img/chungnhansamsung.JPG" alt="Samsung Solve 2026">
+                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
+                        </div>
+                        <div class="cert-content">
+                            <span class="cert-tag tag-samsung">Chứng nhận</span>
+                            <h3 class="cert-title">Chứng nhận Solve for Tomorrow 2026 (Samsung)</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Matcha Brewing Simulator -->
+        <section id="matcha-game" class="matcha-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">TIỆM TRÀ MATCHA LATTE</h2>
+                    <p class="section-desc">Hãy tự tay pha chế một ly Matcha Latte thơm lừng béo ngậy để cùng nhâm nhi
+                        nhé! 🍵</p>
+                </div>
+
+                <div class="game-box glassmorphism">
+                    <div class="game-left">
+                        <h3>Công thức pha chế</h3>
+                        <p>Nhấp chuột vào từng nút nguyên liệu bên dưới để thả vào cốc, sau đó nhấn giữ và di chuyển
+                            chuột liên tục trong cốc để khuấy đều nhé!</p>
+
+                        <div class="ingredients-list-cute">
+                            <button class="ing-btn-cute" data-ingredient="matcha">
+                                <span class="ing-icon-cute">🍵</span>
+                                <span>Bột Matcha</span>
+                            </button>
+                            <button class="ing-btn-cute" data-ingredient="water">
+                                <span class="ing-icon-cute">💧</span>
+                                <span>Nước Sôi</span>
+                            </button>
+                            <button class="ing-btn-cute" data-ingredient="milk">
+                                <span class="ing-icon-cute">🥛</span>
+                                <span>Sữa Tươi</span>
+                            </button>
+                            <button class="ing-btn-cute" data-ingredient="sugar">
+                                <span class="ing-icon-cute">🍯</span>
+                                <span>Mật Ong</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="game-right">
+                        <div class="cup-container-cute">
+                            <div id="matcha-cup" class="matcha-cup-cute">
+                                <div class="cup-handle-cute"></div>
+                                <div class="cup-body-cute">
+                                    <div class="liquid-wrapper-cute">
+                                        <div id="liquid-base" class="liquid-layer-cute"></div>
+                                        <div id="liquid-foam" class="liquid-layer-cute foam-layer"></div>
+                                        <div id="stirring-spiral" class="stirring-spiral-cute"></div>
+                                    </div>
+                                </div>
+                                <div class="cup-shadow-cute"></div>
+                            </div>
+                        </div>
+
+                        <div class="brew-progress-box">
+                            <span id="brew-progress-text">Thêm đầy đủ 4 nguyên liệu vào cốc...</span>
+                            <div class="progress-bar-container-cute">
+                                <div id="brew-progress-bar" class="progress-bar-fill-cute"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Win Game Card Overlay -->
+                    <div id="game-win-overlay" class="game-win-overlay hidden">
+                        <div class="win-card glassmorphism">
+                            <span class="win-emoji">🐻🍵🎉</span>
+                            <h3>Ly Matcha đã hoàn thành!</h3>
+                            <p>Bạn đã pha chế thành công một ly Matcha Latte thơm béo ngậy chuẩn gu vị giác của Quang
+                                rồi đó!</p>
+                            <p class="win-quote">"Matcha đắng thanh hòa cùng sữa ngọt lành, khôi nguồn cảm hứng sáng
+                                tạo!"</p>
+                            <button id="reset-game-btn" class="btn btn-cute">Pha ly khác 🔄</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Made with 🍵 by <strong>Nguyễn Duy Quang</strong> (Quang có Gờ)</p>
+            <p class="footer-details">Đà Nẵng, Việt Nam • 2026</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal for Full View Images -->
+    <div id="cert-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content glassmorphism">
+            <button class="modal-close" id="modal-close-btn">&times;</button>
+            <div class="modal-body">
+                <div class="modal-img-container">
+                    <img id="modal-img" src="" alt="Chứng nhận">
+                </div>
+                <div class="modal-info-container">
+                    <span class="modal-tag">Thành tích</span>
+                    <h3 id="modal-title">Tiêu đề Chứng nhận</h3>
+                    <p id="modal-desc">Mô tả đầy đủ chi tiết.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Libraries CDNs -->
+    <!-- Three.js (r128) -->
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://unpkg.com/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- GSAP (Core) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- Application Logic -->
+    <script src="app.js"></script>
+</body>
+
+</html>
