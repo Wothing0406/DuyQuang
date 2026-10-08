@@ -58,6 +58,20 @@
     padding: 0;
 }
 
+.icon-inline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.skill-label-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
 html {
     scroll-behavior: smooth;
     scrollbar-width: thin;

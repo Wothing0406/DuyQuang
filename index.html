@@ -1,534 +1,887 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Nguyễn Duy Quang | Top 500 AI Riser Vietnam • Google Certified • Matcha 3D Profile</title>
-    <meta name="description"
-        content="Trang web Profile cá nhân phong cách Matcha 3D của Nguyễn Duy Quang (Quang có Gờ). Top 500 AI Riser Vietnam (Google for Developers), Kaggle AI Agents Certified, Nghiên cứu AI, React & Backend.">
-    <meta name="keywords" content="Nguyễn Duy Quang, Quang có Gờ, AI Riser Vietnam, Google for Developers, Kaggle AI Agents, Vibe Coding, Da Nang, Portfolio 3D">
-    <meta name="author" content="Nguyễn Duy Quang">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=5.0"
+    />
+    <title>
+      Nguyễn Duy Quang | Top 500 AI Riser Vietnam • Google Certified • Matcha 3D
+      Profile
+    </title>
+    <meta
+      name="description"
+      content="Trang web Profile cá nhân phong cách Matcha 3D của Nguyễn Duy Quang (Quang có Gờ). Top 500 AI Riser Vietnam (Google for Developers), Kaggle AI Agents Certified, Nghiên cứu AI, React & Backend."
+    />
+    <meta
+      name="keywords"
+      content="Nguyễn Duy Quang, Quang có Gờ, AI Riser Vietnam, Google for Developers, Kaggle AI Agents, Vibe Coding, Da Nang, Portfolio 3D"
+    />
+    <meta name="author" content="Nguyễn Duy Quang" />
 
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Nguyễn Duy Quang | Top 500 AI Riser Vietnam • 3D Matcha Profile">
-    <meta property="og:description" content="Khám phá profile 3D tương tác của Nguyễn Duy Quang - Top 500 AI Riser Vietnam & Kaggle Google Certified.">
-    <meta property="og:image" content="img/ai_riser_vietnam_2026.jpg">
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Nguyễn Duy Quang | Top 500 AI Riser Vietnam • 3D Matcha Profile"
+    />
+    <meta
+      property="og:description"
+      content="Khám phá profile 3D tương tác của Nguyễn Duy Quang - Top 500 AI Riser Vietnam & Kaggle Google Certified."
+    />
+    <meta property="og:image" content="img/ai_riser_vietnam_2026.jpg" />
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesque:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesque:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- CSS Stylesheet -->
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Background Cute Orbs -->
     <div class="cute-bg" aria-hidden="true">
-        <div class="bubble bubble-1"></div>
-        <div class="bubble bubble-2"></div>
-        <div class="bubble bubble-3"></div>
-        <div class="bubble bubble-4"></div>
-        <div class="bubble bubble-5"></div>
+      <div class="bubble bubble-1"></div>
+      <div class="bubble bubble-2"></div>
+      <div class="bubble bubble-3"></div>
+      <div class="bubble bubble-4"></div>
+      <div class="bubble bubble-5"></div>
     </div>
 
     <!-- Navigation Header -->
     <header class="navbar" id="top-navbar">
-        <div class="logo">
-            <span class="logo-accent">🍵</span>
-            <span class="logo-name">QUANG CÓ GỜ</span>
-        </div>
-        <div class="status-badge" title="Chứng nhận từ Google for Developers">
-            <span class="pulse-dot"></span>
-            <span class="status-text">Top 500 AI Riser VN • Google</span>
-        </div>
-        <nav class="nav-links" aria-label="Desktop Navigation">
-            <a href="#hero" class="nav-item active">Giới thiệu</a>
-            <a href="#gallery-cute" class="nav-item">Thành tựu <span class="nav-counter">9</span></a>
-            <a href="#matcha-game" class="nav-item">Tiệm Trà 3D</a>
-            <a href="#contact" class="nav-item">Liên hệ</a>
-        </nav>
-        <div class="nav-actions">
-            <button id="sound-toggle-btn" class="icon-toggle-btn" title="Bật/Tắt âm thanh tương tác" aria-label="Toggle Sound">
-                <span id="sound-icon">🔊</span>
-            </button>
-        </div>
+      <div class="logo">
+        <span class="logo-accent">
+          <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+        </span>
+        <span class="logo-name">QUANG CÓ GỜ</span>
+      </div>
+      <div class="status-badge" title="Chứng nhận từ Google for Developers">
+        <span class="pulse-dot"></span>
+        <span class="status-text">Top 500 AI Riser VN • Google</span>
+      </div>
+      <nav class="nav-links" aria-label="Desktop Navigation">
+        <a href="#hero" class="nav-item active">Giới thiệu</a>
+        <a href="#gallery-cute" class="nav-item"
+          >Thành tựu <span class="nav-counter">9</span></a
+        >
+        <a href="#matcha-game" class="nav-item">Tiệm Trà 3D</a>
+        <a href="#contact" class="nav-item">Liên hệ</a>
+      </nav>
+      <div class="nav-actions">
+        <button
+          id="sound-toggle-btn"
+          class="icon-toggle-btn"
+          title="Bật/Tắt âm thanh tương tác"
+          aria-label="Toggle Sound"
+        >
+          <span id="sound-icon">
+            <svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          </span>
+        </button>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main>
-        <!-- Hero & Skills Combined Section -->
-        <section id="hero" class="hero-section">
-            <div class="container hero-container">
-                <!-- Text and Skills Side -->
-                <div class="hero-text-side">
-                    <!-- Prominent Highlight Pill -->
-                    <div class="hero-pill-badge">
-                        <span class="pill-sparkle">✨</span>
-                        <span class="pill-text">TOP 500 AI RISER VIỆT NAM 2026 • GOOGLE FOR DEVELOPERS</span>
-                    </div>
+      <!-- Hero & Skills Combined Section -->
+      <section id="hero" class="hero-section">
+        <div class="container hero-container">
+          <!-- Text and Skills Side -->
+          <div class="hero-text-side">
+            <!-- Prominent Highlight Pill -->
+            <div class="hero-pill-badge">
+              <span class="pill-sparkle">
+                <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </span>
+              <span class="pill-text"
+                >TOP 500 AI RISER VIỆT NAM 2026 • GOOGLE FOR DEVELOPERS</span
+              >
+            </div>
 
-                    <h1 class="hero-title">
-                        NGUYỄN DUY QUANG
-                    </h1>
-                    <p class="hero-nickname">
-                        Biệt danh thân mật: <span class="cute-highlight">Quang có Gờ</span>
+            <h1 class="hero-title">NGUYỄN DUY QUANG</h1>
+            <p class="hero-nickname">
+              Biệt danh thân mật:
+              <span class="cute-highlight">Quang có Gờ</span>
+            </p>
+            <p class="hero-subtitle">
+              Học sinh THPT tại Đà Nẵng chuyên nghiên cứu
+              <strong>Training AI / Deep Learning</strong>, lập trình
+              <strong>React & 3D Web</strong>, kiến trúc
+              <strong>Backend API</strong> và tối ưu hóa
+              <strong>SQL Database</strong>.
+            </p>
+
+            <!-- Bento Trophy Highlights Grid -->
+            <div class="trophy-bento-grid">
+              <div class="trophy-bento-card card-google">
+                <div class="bento-icon">
+                  <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+                </div>
+                <div class="bento-info">
+                  <span class="bento-sub">#BuildwithGoogleAI</span>
+                  <h4 class="bento-title">Top 500 AI Riser VN</h4>
+                </div>
+              </div>
+              <div class="trophy-bento-card card-kaggle">
+                <div class="bento-icon">
+                  <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="bento-info">
+                  <span class="bento-sub">Kaggle & Google</span>
+                  <h4 class="bento-title">5-Day Vibe Coding</h4>
+                </div>
+              </div>
+              <div class="trophy-bento-card card-stem">
+                <div class="bento-icon">
+                  <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+                </div>
+                <div class="bento-info">
+                  <span class="bento-sub">KHKT Cấp Trường</span>
+                  <h4 class="bento-title">Giải Nhất STEM 2026</h4>
+                </div>
+              </div>
+              <div class="trophy-bento-card card-city">
+                <div class="bento-icon">
+                  <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+                </div>
+                <div class="bento-info">
+                  <span class="bento-sub">KHKT Thành Phố</span>
+                  <h4 class="bento-title">Giải Ba Cấp TP 2026</h4>
+                </div>
+              </div>
+            </div>
+
+            <!-- Compact Social Contact Circles -->
+            <div class="contact-row-cute" id="contact">
+              <a
+                href="https://www.facebook.com/nguyenduyquang.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-circle-btn card-fb"
+                title="Facebook Nguyễn Duy Quang"
+                aria-label="Facebook"
+              >
+                <img
+                  src="https://img.icons8.com/color/48/facebook-new.png"
+                  alt="Facebook"
+                />
+              </a>
+              <a
+                href="https://www.instagram.com/quangcogo0406/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-circle-btn card-ig"
+                title="Instagram quangcogo0406"
+                aria-label="Instagram"
+              >
+                <img
+                  src="https://img.icons8.com/color/48/instagram-new.png"
+                  alt="Instagram"
+                />
+              </a>
+              <a
+                href="https://github.com/Wothing0406"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-circle-btn card-gh"
+                title="GitHub Wothing0406"
+                aria-label="GitHub"
+              >
+                <img
+                  src="https://img.icons8.com/color/48/github.png"
+                  alt="GitHub"
+                />
+              </a>
+              <a
+                href="mailto:poiairo4628@gmail.com"
+                class="contact-circle-btn card-mail"
+                title="Gmail poiairo4628@gmail.com"
+                aria-label="Gmail"
+              >
+                <img
+                  src="https://img.icons8.com/color/48/gmail-new.png"
+                  alt="Gmail"
+                />
+              </a>
+              <a
+                href="tel:0795277227"
+                class="contact-circle-btn card-phone"
+                title="Hotline: 0795 277 227"
+                aria-label="Điện thoại"
+              >
+                <img
+                  src="https://img.icons8.com/color/48/phone.png"
+                  alt="Điện thoại"
+                />
+              </a>
+            </div>
+
+            <!-- Skills Showcase Dashboard directly in Hero -->
+            <div class="skills-dashboard-cute">
+              <div class="skills-header-row">
+                <h3>NĂNG LỰC CỐT LÕI & CHUYÊN MÔN</h3>
+                <span class="skills-badge-tag">Full-Stack & AI</span>
+              </div>
+              <div class="skills-list-cute">
+                <div class="skill-item-cute">
+                  <div class="skill-label-cute">
+                    <span class="skill-label-text">
+                      <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5V3m0 18v-2M5 12H3m18 0h-2"/><rect x="5" y="5" width="14" height="14" rx="3"/><path d="M9 9h6v6H9z"/></svg>
+                      Training AI / Deep Learning (Python, PyTorch)
+                    </span>
+                    <strong>92%</strong>
+                  </div>
+                  <div class="progress-track-cute">
+                    <div class="progress-bar-cute" style="width: 92%"></div>
+                  </div>
+                </div>
+                <div class="skill-item-cute">
+                  <div class="skill-label-cute">
+                    <span class="skill-label-text">
+                      <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                      Frontend React, Three.js 3D & UI Modern
+                    </span>
+                    <strong>88%</strong>
+                  </div>
+                  <div class="progress-track-cute">
+                    <div class="progress-bar-cute" style="width: 88%"></div>
+                  </div>
+                </div>
+                <div class="skill-item-cute">
+                  <div class="skill-label-cute">
+                    <span class="skill-label-text">
+                      <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
+                      Backend API & Distributed Systems (Node.js/FastAPI)
+                    </span>
+                    <strong>85%</strong>
+                  </div>
+                  <div class="progress-track-cute">
+                    <div class="progress-bar-cute" style="width: 85%"></div>
+                  </div>
+                </div>
+                <div class="skill-item-cute">
+                  <div class="skill-label-cute">
+                    <span class="skill-label-text">
+                      <svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                      Database Architecture & Query Optimization (SQL)
+                    </span>
+                    <strong>82%</strong>
+                  </div>
+                  <div class="progress-track-cute">
+                    <div class="progress-bar-cute" style="width: 82%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3D Mascot & Clickable Floating 3D Logos Side -->
+          <div class="hero-mascot-side">
+            <div class="mascot-box">
+              <!-- 3D Header Toolbar -->
+              <div class="mascot-3d-toolbar">
+                <div class="model-badge-3d">
+                  <span class="dot-3d"></span> 3D Interactive Mascot
+                </div>
+                <div class="tool-controls">
+                  <button
+                    id="btn-toggle-rotate"
+                    class="tool-btn"
+                    title="Bật/Tắt tự xoay"
+                  >
+                    <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                    Tự xoay
+                  </button>
+                  <button
+                    id="btn-reset-view"
+                    class="tool-btn"
+                    title="Đặt lại góc nhìn ban đầu"
+                  >
+                    <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    Góc chuẩn
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3D Canvas Container -->
+              <div id="mascot-canvas-container" class="canvas-wrapper">
+                <!-- 3D Loader -->
+                <div id="mascot-3d-loader" class="mascot-loader">
+                  <div class="tea-spinner"></div>
+                  <span>Đang nạp không gian 3D...</span>
+                </div>
+
+                <!-- WebGL Fallback if not supported -->
+                <div id="mascot-fallback" class="mascot-fallback hidden">
+                  <div class="fallback-card">
+                    <span class="fallback-icon">
+                      <svg class="icon-inline" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                    </span>
+                    <h4>Mascot Matcha 3D</h4>
+                    <p>
+                      Trình duyệt của bạn đang bật chế độ tiết kiệm năng lượng.
+                      Vui lòng bật tăng tốc phần cứng WebGL để trải nghiệm 3D
+                      đầy đủ nhất!
                     </p>
-                    <p class="hero-subtitle">
-                        Mình là học sinh THPT tại Đà Nẵng, chuyên nghiên cứu về <strong>Training AI / Deep Learning</strong>, lập trình
-                        <strong>React & 3D Web</strong>, kiến trúc <strong>Backend API</strong> và tối ưu hóa <strong>SQL Database</strong>.
-                    </p>
-
-                    <!-- Bento Trophy Highlights Grid -->
-                    <div class="trophy-bento-grid">
-                        <div class="trophy-bento-card card-google">
-                            <div class="bento-icon">🌟</div>
-                            <div class="bento-info">
-                                <span class="bento-sub">#BuildwithGoogleAI</span>
-                                <h4 class="bento-title">Top 500 AI Riser VN</h4>
-                            </div>
-                        </div>
-                        <div class="trophy-bento-card card-kaggle">
-                            <div class="bento-icon">⚡</div>
-                            <div class="bento-info">
-                                <span class="bento-sub">Kaggle & Google</span>
-                                <h4 class="bento-title">5-Day Vibe Coding</h4>
-                            </div>
-                        </div>
-                        <div class="trophy-bento-card card-stem">
-                            <div class="bento-icon">🥇</div>
-                            <div class="bento-info">
-                                <span class="bento-sub">KHKT Cấp Trường</span>
-                                <h4 class="bento-title">Giải Nhất STEM 2026</h4>
-                            </div>
-                        </div>
-                        <div class="trophy-bento-card card-city">
-                            <div class="bento-icon">🥉</div>
-                            <div class="bento-info">
-                                <span class="bento-sub">KHKT Thành Phố</span>
-                                <h4 class="bento-title">Giải Ba Cấp TP 2026</h4>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Compact Social Contact Circles -->
-                    <div class="contact-row-cute" id="contact">
-                        <a href="https://www.facebook.com/NgDoQ" target="_blank" rel="noopener noreferrer" class="contact-circle-btn card-fb" title="Facebook Nguyễn Duy Quang" aria-label="Facebook">
-                            <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook">
-                        </a>
-                        <a href="https://www.instagram.com/quangcogo0406/" target="_blank" rel="noopener noreferrer" class="contact-circle-btn card-ig" title="Instagram quangcogo0406" aria-label="Instagram">
-                            <img src="https://img.icons8.com/color/48/instagram-new.png" alt="Instagram">
-                        </a>
-                        <a href="https://github.com/Wothing0406" target="_blank" rel="noopener noreferrer" class="contact-circle-btn card-gh" title="GitHub Wothing0406" aria-label="GitHub">
-                            <img src="https://img.icons8.com/color/48/github.png" alt="GitHub">
-                        </a>
-                        <a href="mailto:poiairo4628@gmail.com" class="contact-circle-btn card-mail" title="Gmail poiairo4628@gmail.com" aria-label="Gmail">
-                            <img src="https://img.icons8.com/color/48/gmail-new.png" alt="Gmail">
-                        </a>
-                        <a href="tel:0795277227" class="contact-circle-btn card-phone" title="Hotline: 0795 277 227" aria-label="Điện thoại">
-                            <img src="https://img.icons8.com/color/48/phone.png" alt="Điện thoại">
-                        </a>
-                    </div>
-
-                    <!-- Skills Showcase Dashboard directly in Hero -->
-                    <div class="skills-dashboard-cute">
-                        <div class="skills-header-row">
-                            <h3>NĂNG LỰC CỐT LÕI & CHUYÊN MÔN</h3>
-                            <span class="skills-badge-tag">Full-Stack & AI</span>
-                        </div>
-                        <div class="skills-list-cute">
-                            <div class="skill-item-cute">
-                                <div class="skill-label-cute">
-                                    <span>🤖 Training AI / Machine Learning (Python, PyTorch)</span>
-                                    <strong>92%</strong>
-                                </div>
-                                <div class="progress-track-cute">
-                                    <div class="progress-bar-cute" style="width: 92%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item-cute">
-                                <div class="skill-label-cute">
-                                    <span>⚛️ Frontend React, Three.js 3D & UI Modern</span>
-                                    <strong>88%</strong>
-                                </div>
-                                <div class="progress-track-cute">
-                                    <div class="progress-bar-cute" style="width: 88%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item-cute">
-                                <div class="skill-label-cute">
-                                    <span>⚙️ Backend API & Distributed Systems (Node.js/FastAPI)</span>
-                                    <strong>85%</strong>
-                                </div>
-                                <div class="progress-track-cute">
-                                    <div class="progress-bar-cute" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div class="skill-item-cute">
-                                <div class="skill-label-cute">
-                                    <span>🗄️ Database Architecture & Query Optimization (SQL)</span>
-                                    <strong>82%</strong>
-                                </div>
-                                <div class="progress-track-cute">
-                                    <div class="progress-bar-cute" style="width: 82%"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
 
-                <!-- 3D Mascot & Clickable Floating 3D Logos Side -->
-                <div class="hero-mascot-side">
-                    <div class="mascot-box">
-                        <!-- 3D Header Toolbar -->
-                        <div class="mascot-3d-toolbar">
-                            <div class="model-badge-3d">
-                                <span class="dot-3d"></span> 3D Interactive Mascot
-                            </div>
-                            <div class="tool-controls">
-                                <button id="btn-toggle-rotate" class="tool-btn" title="Bật/Tắt tự xoay">🔄 Tự xoay</button>
-                                <button id="btn-reset-view" class="tool-btn" title="Đặt lại góc nhìn ban đầu">🎯 Góc chuẩn</button>
-                            </div>
-                        </div>
+              <!-- Interactive Speech Bubble -->
+              <div class="mascot-speech-bubble" id="mascot-speech-box">
+                <span id="speech-text"
+                  >Chào bạn! Mình là chú gấu Matcha 3D của Quang. Chạm hoặc xoay các huy
+                  hiệu 3D bay quanh mình nhé!</span
+                >
+              </div>
 
-                        <!-- 3D Canvas Container -->
-                        <div id="mascot-canvas-container" class="canvas-wrapper">
-                            <!-- 3D Loader -->
-                            <div id="mascot-3d-loader" class="mascot-loader">
-                                <div class="tea-spinner"></div>
-                                <span>Đang nạp không gian 3D...</span>
-                            </div>
-
-                            <!-- WebGL Fallback if not supported -->
-                            <div id="mascot-fallback" class="mascot-fallback hidden">
-                                <div class="fallback-card">
-                                    <span class="fallback-icon">🐻🍵</span>
-                                    <h4>Mascot Matcha 3D</h4>
-                                    <p>Trình duyệt của bạn đang bật chế độ tiết kiệm năng lượng. Vui lòng bật tăng tốc phần cứng WebGL để trải nghiệm 3D đầy đủ nhất!</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Interactive Speech Bubble -->
-                        <div class="mascot-speech-bubble" id="mascot-speech-box">
-                            <span id="speech-text">Chào bạn! Mình là chú gấu Matcha 3D. Chạm hoặc xoay các huy hiệu 3D bay quanh mình nhé! 🐻🍵</span>
-                        </div>
-
-                        <!-- Mobile Hint -->
-                        <div class="mascot-mobile-hint">
-                            <span>👆 Dùng 1 ngón tay xoay 3D • Chạm để tương tác</span>
-                        </div>
-                    </div>
-                </div>
+              <!-- Mobile Hint -->
+              <div class="mascot-mobile-hint">
+                <span>
+                  <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14 15 7-7-7-7"/><path d="M4 14v7a2 2 0 0 0 2 2h12"/></svg>
+                  Dùng 1 ngón tay xoay 3D • Chạm để tương tác
+                </span>
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <!-- Achievements Section (Enhanced Grid with Filters & Google Badges) -->
-        <section id="gallery-cute" class="gallery-section">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-subtitle-pill">DANH HIỆU & GIẢI THƯỞNG</div>
-                    <h2 class="section-title">THÀNH TỰU & CHỨNG NHẬN</h2>
-                    <p class="section-desc">Ghi nhận hành trình nghiên cứu khoa học kỹ thuật, sáng tạo công nghệ và chinh phục các giải thưởng AI danh giá.</p>
+      <!-- Achievements Section (Enhanced Grid with Filters & Google Badges) -->
+      <section id="gallery-cute" class="gallery-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-subtitle-pill">DANH HIỆU & GIẢI THƯỞNG</div>
+            <h2 class="section-title">THÀNH TỰU & CHỨNG NHẬN</h2>
+            <p class="section-desc">
+              Ghi nhận hành trình nghiên cứu khoa học kỹ thuật, sáng tạo công
+              nghệ và chinh phục các giải thưởng AI danh giá.
+            </p>
+          </div>
+
+          <!-- Category Filters -->
+          <div class="certs-filter-bar">
+            <button class="filter-btn active" data-filter="all">
+              <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              Tất cả (9)
+            </button>
+            <button class="filter-btn" data-filter="google-ai">
+              <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="12" x="3" y="6" rx="2"/><path d="M9 13v-2"/><path d="M15 13v-2"/><path d="M12 2v4"/></svg>
+              Google & AI (3)
+            </button>
+            <button class="filter-btn" data-filter="stem">
+              <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.72 19.4A2 2 0 0 0 6.44 22h11.12a2 2 0 0 0 1.72-2.6L14 9.31V2"/></svg>
+              KHKT & STEM (4)
+            </button>
+            <button class="filter-btn" data-filter="honors">
+              <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+              Vinh danh & Khác (2)
+            </button>
+          </div>
+
+          <!-- Certificates Grid -->
+          <div class="certs-grid">
+            <!-- Cert 0: TOP 500 AI RISER VIETNAM (NEW - PROMINENT!) -->
+            <div
+              class="cert-card glassmorphism card-featured card-google-ai"
+              data-index="0"
+              data-category="google-ai"
+            >
+              <div class="featured-ribbon">
+                <svg class="icon-inline" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                NỔI BẬT TOÀN QUỐC
+              </div>
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/ai_riser_vietnam_2026.jpg"
+                  alt="Top 500 AI Riser Vietnam 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay">
+                  <span>
+                    <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    Xem chi tiết
+                  </span>
                 </div>
-
-                <!-- Category Filters -->
-                <div class="certs-filter-bar">
-                    <button class="filter-btn active" data-filter="all">✨ Tất cả (9)</button>
-                    <button class="filter-btn" data-filter="google-ai">🤖 Google & AI (3)</button>
-                    <button class="filter-btn" data-filter="stem">🔬 KHKT & STEM (4)</button>
-                    <button class="filter-btn" data-filter="honors">🎖️ Vinh danh & Khác (2)</button>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-google">Google for Developers</span>
+                  <span class="cert-year">10/2026</span>
                 </div>
-
-                <!-- Certificates Grid -->
-                <div class="certs-grid">
-                    <!-- Cert 0: TOP 500 AI RISER VIETNAM (NEW - PROMINENT!) -->
-                    <div class="cert-card glassmorphism card-featured card-google-ai" data-index="0" data-category="google-ai">
-                        <div class="featured-ribbon">⭐ NỔI BẬT TOÀN QUỐC</div>
-                        <div class="cert-img-wrapper">
-                            <img src="img/ai_riser_vietnam_2026.jpg" alt="Top 500 AI Riser Vietnam 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-google">Google for Developers</span>
-                                <span class="cert-year">10/2026</span>
-                            </div>
-                            <h3 class="cert-title">Top 500 Toàn Quốc - AI Riser Vietnam 2026 (Google for Developers)</h3>
-                            <p class="cert-snippet">Vinh danh Top 500 tài năng xuất sắc chương trình #BuildwithGoogleAI với sứ mệnh "Vươn mình kiến tạo".</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 1: 5-DAY AI AGENTS VIBE CODING (NEW - PROMINENT!) -->
-                    <div class="cert-card glassmorphism card-featured card-kaggle-ai" data-index="1" data-category="google-ai">
-                        <div class="featured-ribbon">⭐ QUỐC TẾ</div>
-                        <div class="cert-img-wrapper">
-                            <img src="img/google_vibe_coding_2026.png" alt="5-Day AI Agents Vibe Coding Kaggle Google" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-kaggle">Kaggle & Google</span>
-                                <span class="cert-year">07/2026</span>
-                            </div>
-                            <h3 class="cert-title">5-Day AI Agents: Intensive Vibe Coding Course (Kaggle & Google)</h3>
-                            <p class="cert-snippet">Chứng nhận quốc tế hoàn thành khóa đào tạo chuyên sâu về AI Agents và phương pháp Vibe Coding hiện đại.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 2: VINH DANH THÀNH TÍCH 2026 -->
-                    <div class="cert-card glassmorphism" data-index="2" data-category="honors">
-                        <div class="cert-img-wrapper">
-                            <img src="img/vinhdanh2026.jpg" alt="Vinh danh 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-gold">Vinh danh</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Vinh danh thành tích học tập xuất sắc 2026</h3>
-                            <p class="cert-snippet">Bảng vinh danh chính thức ghi nhận nỗ lực vượt bậc trong học tập và phong trào sáng tạo.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 3: GIẢI NHẤT STEM KHKT 2026 -->
-                    <div class="cert-card glassmorphism" data-index="3" data-category="stem">
-                        <div class="cert-img-wrapper">
-                            <img src="img/nhatsteam2026.jpg" alt="Nhất STEM 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-first">Giải Nhất STEM</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Giải Nhất STEM KHKT cấp trường 2026</h3>
-                            <p class="cert-snippet">Đoạt giải Nhất cuộc thi Nghiên cứu Khoa học Kỹ thuật kết hợp ngày hội STEM cấp trường.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 4: GIẢI BA KHKT CẤP THÀNH PHỐ ĐÀ NẴNG 2026 -->
-                    <div class="cert-card glassmorphism" data-index="4" data-category="stem">
-                        <div class="cert-img-wrapper">
-                            <img src="img/giaibakhktcaptp2026.jpg" alt="Ba KHKT TP Đà Nẵng 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-third">Giải Ba Cấp TP</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Giải Ba KHKT cấp thành phố Đà Nẵng 2026</h3>
-                            <p class="cert-snippet">Giải thưởng chung cuộc tại cuộc thi Khoa học Kỹ thuật học sinh trung học cấp Thành phố.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 5: GIẢI BA AI CHALLENGE 2026 -->
-                    <div class="cert-card glassmorphism" data-index="5" data-category="google-ai">
-                        <div class="cert-img-wrapper">
-                            <img src="img/giaibacuocthiAI.jpg" alt="Ba AI Challenge 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-third">Giải Ba AI</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Giải Ba Hội An Tây AI Challenge 2026</h3>
-                            <p class="cert-snippet">Đoạt giải Ba tại cuộc thi lập trình mô hình và giải pháp trí tuệ nhân tạo lớn Chiến binh Kỷ nguyên số.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 6: SAMSUNG SOLVE FOR TOMORROW 2026 -->
-                    <div class="cert-card glassmorphism" data-index="6" data-category="stem">
-                        <div class="cert-img-wrapper">
-                            <img src="img/chungnhansamsung.JPG" alt="Samsung Solve 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-samsung">Samsung SFT</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Chứng nhận Solve for Tomorrow 2026 (Samsung)</h3>
-                            <p class="cert-snippet">Chứng nhận hoàn thành đào tạo kỹ năng tư duy thiết kế và phát triển dự án thực tế từ Samsung.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 7: KK HSG TIN HỌC 2026 -->
-                    <div class="cert-card glassmorphism" data-index="7" data-category="honors">
-                        <div class="cert-img-wrapper">
-                            <img src="img/khuyenkhichhsgtinhoc2026.jpg" alt="KK HSG Tin 2026" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-kk">Giải KK Tin học</span>
-                                <span class="cert-year">2026</span>
-                            </div>
-                            <h3 class="cert-title">Giải Khuyến khích HSG Tin học cấp trường 2026</h3>
-                            <p class="cert-snippet">Đạt giải Khuyến khích kỳ thi tuyển chọn Học sinh giỏi bộ môn Tin học cấp trường.</p>
-                        </div>
-                    </div>
-
-                    <!-- Cert 8: KK KHKT CẤP TRƯỜNG 2025 -->
-                    <div class="cert-card glassmorphism" data-index="8" data-category="stem">
-                        <div class="cert-img-wrapper">
-                            <img src="img/khuyenkhichkhktcaptinh.jpg" alt="KK KHKT 2025" loading="lazy">
-                            <div class="cert-overlay"><span>Xem chi tiết 🔍</span></div>
-                        </div>
-                        <div class="cert-content">
-                            <div class="cert-meta-row">
-                                <span class="cert-tag tag-kk">Giải KK KHKT</span>
-                                <span class="cert-year">2025</span>
-                            </div>
-                            <h3 class="cert-title">Giải Khuyến khích KHKT cấp trường năm 2025</h3>
-                            <p class="cert-snippet">Giải thưởng khởi đầu ghi nhận nỗ lực sáng tạo trong cuộc thi KHKT năm học 2024 - 2025.</p>
-                        </div>
-                    </div>
-                </div>
+                <h3 class="cert-title">
+                  Top 500 Toàn Quốc - AI Riser Vietnam 2026 (Google for Developers)
+                </h3>
+                <p class="cert-snippet">
+                  Vinh danh Top 500 tài năng xuất sắc chương trình #BuildwithGoogleAI với sứ mệnh "Vươn mình kiến tạo".
+                </p>
+              </div>
             </div>
-        </section>
 
-        <!-- Matcha Brewing Simulator (Interactive Mini-game) -->
-        <section id="matcha-game" class="matcha-section">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-subtitle-pill">MINI-GAME TƯƠNG TÁC</div>
-                    <h2 class="section-title">TIỆM TRÀ MATCHA LATTE</h2>
-                    <p class="section-desc">Tự tay pha chế ly Matcha Latte chuẩn vị cùng Quang để giải tỏa căng thẳng và nạp năng lượng sáng tạo nhé! 🍵</p>
+            <!-- Cert 1: 5-DAY AI AGENTS VIBE CODING (NEW - PROMINENT!) -->
+            <div
+              class="cert-card glassmorphism card-featured card-kaggle-ai"
+              data-index="1"
+              data-category="google-ai"
+            >
+              <div class="featured-ribbon">
+                <svg class="icon-inline" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                QUỐC TẾ
+              </div>
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/google_vibe_coding_2026.png"
+                  alt="5-Day AI Agents Vibe Coding Kaggle Google"
+                  loading="lazy"
+                />
+                <div class="cert-overlay">
+                  <span>
+                    <svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    Xem chi tiết
+                  </span>
                 </div>
-
-                <div class="game-box glassmorphism">
-                    <div class="game-left">
-                        <h3>Công thức pha chế độc quyền</h3>
-                        <p>1. Nhấp/Chạm vào từng nguyên liệu để cho vào ly.<br>
-                           2. Dùng chuột hoặc ngón tay giữ và xoay tròn đều trong ly để đánh bông bọt trà sữa!</p>
-
-                        <div class="ingredients-list-cute">
-                            <button class="ing-btn-cute" data-ingredient="matcha" aria-label="Bột Matcha">
-                                <span class="ing-icon-cute">🍵</span>
-                                <span>Bột Matcha</span>
-                            </button>
-                            <button class="ing-btn-cute" data-ingredient="water" aria-label="Nước Sôi">
-                                <span class="ing-icon-cute">💧</span>
-                                <span>Nước Sôi</span>
-                            </button>
-                            <button class="ing-btn-cute" data-ingredient="milk" aria-label="Sữa Tươi">
-                                <span class="ing-icon-cute">🥛</span>
-                                <span>Sữa Tươi</span>
-                            </button>
-                            <button class="ing-btn-cute" data-ingredient="sugar" aria-label="Mật Ong">
-                                <span class="ing-icon-cute">🍯</span>
-                                <span>Mật Ong</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="game-right">
-                        <div class="cup-container-cute">
-                            <div id="matcha-cup" class="matcha-cup-cute" role="button" aria-label="Cốc Matcha tương tác">
-                                <div class="cup-handle-cute"></div>
-                                <div class="cup-body-cute">
-                                    <div class="liquid-wrapper-cute">
-                                        <div id="liquid-base" class="liquid-layer-cute"></div>
-                                        <div id="liquid-foam" class="liquid-layer-cute foam-layer"></div>
-                                        <div id="stirring-spiral" class="stirring-spiral-cute"></div>
-                                    </div>
-                                </div>
-                                <div class="cup-shadow-cute"></div>
-                            </div>
-                        </div>
-
-                        <div class="brew-progress-box">
-                            <span id="brew-progress-text">Thêm đầy đủ 4 nguyên liệu vào cốc...</span>
-                            <div class="progress-bar-container-cute">
-                                <div id="brew-progress-bar" class="progress-bar-fill-cute"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Win Game Card Overlay -->
-                    <div id="game-win-overlay" class="game-win-overlay hidden">
-                        <div class="win-card glassmorphism">
-                            <span class="win-emoji">🐻🍵🎉</span>
-                            <h3>Ly Matcha Latte Đã Hoàn Thành!</h3>
-                            <p>Bạn đã pha chế thành công một ly Matcha thơm lừng béo ngậy chuẩn gu vị giác của Quang rồi đó!</p>
-                            <p class="win-quote">"Matcha đắng thanh hòa cùng sữa ngọt lành, khơi nguồn cảm hứng code đỉnh cao!"</p>
-                            <button id="reset-game-btn" class="btn btn-cute">Pha ly khác 🔄</button>
-                        </div>
-                    </div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-kaggle">Kaggle & Google</span>
+                  <span class="cert-year">07/2026</span>
                 </div>
+                <h3 class="cert-title">
+                  5-Day AI Agents: Intensive Vibe Coding Course (Kaggle &
+                  Google)
+                </h3>
+                <p class="cert-snippet">
+                  Chứng nhận quốc tế hoàn thành khóa đào tạo chuyên sâu về AI
+                  Agents và phương pháp Vibe Coding hiện đại.
+                </p>
+              </div>
             </div>
-        </section>
+
+            <!-- Cert 2: VINH DANH THÀNH TÍCH 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="2"
+              data-category="honors"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/vinhdanh2026.jpg"
+                  alt="Vinh danh 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-gold">Vinh danh</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">
+                  Vinh danh thành tích học tập xuất sắc 2026
+                </h3>
+                <p class="cert-snippet">
+                  Bảng vinh danh chính thức ghi nhận nỗ lực vượt bậc trong học
+                  tập và phong trào sáng tạo.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 3: GIẢI NHẤT STEM KHKT 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="3"
+              data-category="stem"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/nhatsteam2026.jpg"
+                  alt="Nhất STEM 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-first">Giải Nhất STEM</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">Giải Nhất STEM KHKT cấp trường 2026</h3>
+                <p class="cert-snippet">
+                  Đoạt giải Nhất cuộc thi Nghiên cứu Khoa học Kỹ thuật kết hợp
+                  ngày hội STEM cấp trường.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 4: GIẢI BA KHKT CẤP THÀNH PHỐ ĐÀ NẴNG 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="4"
+              data-category="stem"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/giaibakhktcaptp2026.jpg"
+                  alt="Ba KHKT TP Đà Nẵng 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-third">Giải Ba Cấp TP</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">
+                  Giải Ba KHKT cấp thành phố Đà Nẵng 2026
+                </h3>
+                <p class="cert-snippet">
+                  Giải thưởng chung cuộc tại cuộc thi Khoa học Kỹ thuật học sinh
+                  trung học cấp Thành phố.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 5: GIẢI BA AI CHALLENGE 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="5"
+              data-category="google-ai"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/giaibacuocthiAI.jpg"
+                  alt="Ba AI Challenge 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-third">Giải Ba AI</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">Giải Ba Hội An Tây AI Challenge 2026</h3>
+                <p class="cert-snippet">
+                  Đoạt giải Ba tại cuộc thi lập trình mô hình và giải pháp trí
+                  tuệ nhân tạo lớn Chiến binh Kỷ nguyên số.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 6: SAMSUNG SOLVE FOR TOMORROW 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="6"
+              data-category="stem"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/chungnhansamsung.JPG"
+                  alt="Samsung Solve 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-samsung">Samsung SFT</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">
+                  Chứng nhận Solve for Tomorrow 2026 (Samsung)
+                </h3>
+                <p class="cert-snippet">
+                  Chứng nhận hoàn thành đào tạo kỹ năng tư duy thiết kế và phát
+                  triển dự án thực tế từ Samsung.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 7: KK HSG TIN HỌC 2026 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="7"
+              data-category="honors"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/khuyenkhichhsgtinhoc2026.jpg"
+                  alt="KK HSG Tin 2026"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-kk">Giải KK Tin học</span>
+                  <span class="cert-year">2026</span>
+                </div>
+                <h3 class="cert-title">
+                  Giải Khuyến khích HSG Tin học cấp trường 2026
+                </h3>
+                <p class="cert-snippet">
+                  Đạt giải Khuyến khích kỳ thi tuyển chọn Học sinh giỏi bộ môn
+                  Tin học cấp trường.
+                </p>
+              </div>
+            </div>
+
+            <!-- Cert 8: KK KHKT CẤP TRƯỜNG 2025 -->
+            <div
+              class="cert-card glassmorphism"
+              data-index="8"
+              data-category="stem"
+            >
+              <div class="cert-img-wrapper">
+                <img
+                  src="img/khuyenkhichkhktcaptinh.jpg"
+                  alt="KK KHKT 2025"
+                  loading="lazy"
+                />
+                <div class="cert-overlay"><span><svg class="icon-inline" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg> Xem chi tiết</span></div>
+              </div>
+              <div class="cert-content">
+                <div class="cert-meta-row">
+                  <span class="cert-tag tag-kk">Giải KK KHKT</span>
+                  <span class="cert-year">2025</span>
+                </div>
+                <h3 class="cert-title">
+                  Giải Khuyến khích KHKT cấp trường năm 2025
+                </h3>
+                <p class="cert-snippet">
+                  Giải thưởng khởi đầu ghi nhận nỗ lực sáng tạo trong cuộc thi
+                  KHKT năm học 2024 - 2025.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Matcha Brewing Simulator (Interactive Mini-game) -->
+      <section id="matcha-game" class="matcha-section">
+        <div class="container">
+          <div class="section-header">
+            <div class="section-subtitle-pill">MINI-GAME TƯƠNG TÁC</div>
+            <h2 class="section-title">TIỆM TRÀ MATCHA LATTE</h2>
+            <p class="section-desc">
+              Tự tay pha chế ly Matcha Latte chuẩn vị cùng Quang để giải tỏa
+              căng thẳng và nạp năng lượng sáng tạo nhé! 🍵
+            </p>
+          </div>
+
+          <div class="game-box glassmorphism">
+            <div class="game-left">
+              <h3>Công thức pha chế độc quyền</h3>
+              <p>
+                1. Nhấp/Chạm vào từng nguyên liệu để cho vào ly.<br />
+                2. Dùng chuột hoặc ngón tay giữ và xoay tròn đều trong ly để
+                đánh bông bọt trà sữa!
+              </p>
+
+              <div class="ingredients-list-cute">
+                <button
+                  class="ing-btn-cute"
+                  data-ingredient="matcha"
+                  aria-label="Bột Matcha"
+                >
+                  <span class="ing-icon-cute">🍵</span>
+                  <span>Bột Matcha</span>
+                </button>
+                <button
+                  class="ing-btn-cute"
+                  data-ingredient="water"
+                  aria-label="Nước Sôi"
+                >
+                  <span class="ing-icon-cute">💧</span>
+                  <span>Nước Sôi</span>
+                </button>
+                <button
+                  class="ing-btn-cute"
+                  data-ingredient="milk"
+                  aria-label="Sữa Tươi"
+                >
+                  <span class="ing-icon-cute">🥛</span>
+                  <span>Sữa Tươi</span>
+                </button>
+                <button
+                  class="ing-btn-cute"
+                  data-ingredient="sugar"
+                  aria-label="Mật Ong"
+                >
+                  <span class="ing-icon-cute">🍯</span>
+                  <span>Mật Ong</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="game-right">
+              <div class="cup-container-cute">
+                <div
+                  id="matcha-cup"
+                  class="matcha-cup-cute"
+                  role="button"
+                  aria-label="Cốc Matcha tương tác"
+                >
+                  <div class="cup-handle-cute"></div>
+                  <div class="cup-body-cute">
+                    <div class="liquid-wrapper-cute">
+                      <div id="liquid-base" class="liquid-layer-cute"></div>
+                      <div
+                        id="liquid-foam"
+                        class="liquid-layer-cute foam-layer"
+                      ></div>
+                      <div
+                        id="stirring-spiral"
+                        class="stirring-spiral-cute"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="cup-shadow-cute"></div>
+                </div>
+              </div>
+
+              <div class="brew-progress-box">
+                <span id="brew-progress-text"
+                  >Thêm đầy đủ 4 nguyên liệu vào cốc...</span
+                >
+                <div class="progress-bar-container-cute">
+                  <div
+                    id="brew-progress-bar"
+                    class="progress-bar-fill-cute"
+                  ></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Win Game Card Overlay -->
+            <div id="game-win-overlay" class="game-win-overlay hidden">
+              <div class="win-card glassmorphism">
+                <span class="win-emoji">🐻🍵🎉</span>
+                <h3>Ly Matcha Latte Đã Hoàn Thành!</h3>
+                <p>
+                  Bạn đã pha chế thành công một ly Matcha thơm lừng béo ngậy
+                  chuẩn gu vị giác của Quang rồi đó!
+                </p>
+                <p class="win-quote">
+                  "Matcha đắng thanh hòa cùng sữa ngọt lành, khơi nguồn cảm hứng
+                  code đỉnh cao!"
+                </p>
+                <button id="reset-game-btn" class="btn btn-cute">
+                  Pha ly khác 🔄
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <!-- Mobile Bottom Navigation Dock (Thumb-friendly for Smartphones) -->
     <nav class="mobile-bottom-dock" aria-label="Mobile Navigation">
-        <a href="#hero" class="dock-btn active" data-target="hero">
-            <span class="dock-icon">👤</span>
-            <span class="dock-label">Giới thiệu</span>
-        </a>
-        <a href="#gallery-cute" class="dock-btn" data-target="gallery-cute">
-            <span class="dock-icon">🏆</span>
-            <span class="dock-label">Thành tựu</span>
-        </a>
-        <a href="#matcha-game" class="dock-btn" data-target="matcha-game">
-            <span class="dock-icon">🍵</span>
-            <span class="dock-label">Tiệm Trà</span>
-        </a>
-        <a href="#contact" class="dock-btn" data-target="contact">
-            <span class="dock-icon">💬</span>
-            <span class="dock-label">Liên hệ</span>
-        </a>
+      <a href="#hero" class="dock-btn active" data-target="hero">
+        <span class="dock-icon">
+          <svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </span>
+        <span class="dock-label">Giới thiệu</span>
+      </a>
+      <a href="#gallery-cute" class="dock-btn" data-target="gallery-cute">
+        <span class="dock-icon">
+          <svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </span>
+        <span class="dock-label">Thành tựu</span>
+      </a>
+      <a href="#matcha-game" class="dock-btn" data-target="matcha-game">
+        <span class="dock-icon">
+          <svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>
+        </span>
+        <span class="dock-label">Tiệm Trà</span>
+      </a>
+      <a href="#contact" class="dock-btn" data-target="contact">
+        <span class="dock-icon">
+          <svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </span>
+        <span class="dock-label">Liên hệ</span>
+      </a>
     </nav>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-brand">
-                    <span class="logo-accent">🍵</span> <strong>NGUYỄN DUY QUANG</strong> (Quang có Gờ)
-                </div>
-                <p class="footer-quote">"Xây dựng tương lai thông minh với Trí Tuệ Nhân Tạo & Trải Nghiệm Web Đột Phá."</p>
-            </div>
-            <div class="footer-bottom">
-                <p>Top 500 AI Riser Vietnam 2026 • Google for Developers Participant</p>
-                <p class="footer-details">Đà Nẵng, Việt Nam • © 2026 Nguyễn Duy Quang</p>
-            </div>
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <span class="logo-accent">
+              <svg class="icon-inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+            </span>
+            <strong>NGUYỄN DUY QUANG</strong> (Quang có Gờ)
+          </div>
+          <p class="footer-quote">
+            "Xây dựng tương lai thông minh với Trí Tuệ Nhân Tạo & Trải Nghiệm Web Đột Phá."
+          </p>
         </div>
+        <div class="footer-bottom">
+          <p>
+            Top 500 AI Riser Vietnam 2026 • Google for Developers Participant
+          </p>
+          <p class="footer-details">
+            Đà Nẵng, Việt Nam • © 2026 Nguyễn Duy Quang
+          </p>
+        </div>
+      </div>
     </footer>
 
     <!-- Lightbox Modal for Full View Images -->
-    <div id="cert-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content glassmorphism">
-            <button class="modal-close" id="modal-close-btn" aria-label="Đóng">&times;</button>
-            <div class="modal-body">
-                <div class="modal-img-container">
-                    <img id="modal-img" src="" alt="Chứng nhận chi tiết">
-                </div>
-                <div class="modal-info-container">
-                    <div class="modal-header-meta">
-                        <span class="modal-tag">Thành tích</span>
-                        <span id="modal-year" class="modal-year">2026</span>
-                    </div>
-                    <h3 id="modal-title">Tiêu đề Chứng nhận</h3>
-                    <p id="modal-desc">Mô tả đầy đủ chi tiết.</p>
-                    <div class="modal-actions">
-                        <button id="modal-prev-btn" class="modal-nav-btn" title="Thành tích trước">‹ Trước</button>
-                        <span id="modal-counter" class="modal-counter">1 / 9</span>
-                        <button id="modal-next-btn" class="modal-nav-btn" title="Thành tích tiếp">Sau ›</button>
-                    </div>
-                </div>
+    <div
+      id="cert-modal"
+      class="modal hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-backdrop"></div>
+      <div class="modal-content glassmorphism">
+        <button class="modal-close" id="modal-close-btn" aria-label="Đóng">
+          &times;
+        </button>
+        <div class="modal-body">
+          <div class="modal-img-container">
+            <img id="modal-img" src="" alt="Chứng nhận chi tiết" />
+          </div>
+          <div class="modal-info-container">
+            <div class="modal-header-meta">
+              <span class="modal-tag">Thành tích</span>
+              <span id="modal-year" class="modal-year">2026</span>
             </div>
+            <h3 id="modal-title">Tiêu đề Chứng nhận</h3>
+            <p id="modal-desc">Mô tả đầy đủ chi tiết.</p>
+            <div class="modal-actions">
+              <button
+                id="modal-prev-btn"
+                class="modal-nav-btn"
+                title="Thành tích trước"
+              >
+                ‹ Trước
+              </button>
+              <span id="modal-counter" class="modal-counter">1 / 9</span>
+              <button
+                id="modal-next-btn"
+                class="modal-nav-btn"
+                title="Thành tích tiếp"
+              >
+                Sau ›
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- External Libraries CDNs -->
@@ -543,6 +896,5 @@
 
     <!-- Application Logic (Static & Module compatible) -->
     <script type="module" src="app.js"></script>
-</body>
-
+  </body>
 </html>
