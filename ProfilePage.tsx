@@ -37,6 +37,8 @@ import {
   Instagram,
   ExternalLink,
   Code2,
+  Copy,
+  Check,
 } from "lucide-react";
 
 // --- Types & Interfaces ---
@@ -171,9 +173,11 @@ export default function ProfilePage() {
   // --- States ---
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [activeModalIndex, setActiveModalIndex] = useState<number | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
   const [speechText, setSpeechText] = useState<string>(
-    "Xin chào! Mình là chú gấu Matcha 3D của Quang. Tương tác với mình hoặc các huy hiệu 3D bay quanh nhé!"
+    "Meo! Mình là chú mèo mướp Matcha của Quang nè 🐾 Chạm vào mình hoặc các biểu tượng lập trình bay quanh để khám phá nhé!"
   );
   const [activeNavSection, setActiveNavSection] = useState<string>("hero");
   const [is3DLoaded, setIs3DLoaded] = useState<boolean>(false);
@@ -181,6 +185,41 @@ export default function ProfilePage() {
 
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const threeStateRef = useRef<any>(null);
+  const toastTimeoutRef = useRef<any>(null);
+
+  const showToast = (text: string) => {
+    setToastMessage(text);
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    toastTimeoutRef.current = setTimeout(() => {
+      setToastMessage(null);
+    }, 2600);
+  };
+
+  const handleCopyEmail = async () => {
+    const email = "poiairo4628@gmail.com";
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(email);
+      }
+      showToast(`✓ Đã sao chép email: ${email}`);
+      playInteractionSound(820);
+    } catch {
+      showToast(`Email: ${email}`);
+    }
+  };
+
+  const handleCopyPhone = async () => {
+    const phone = "0795 277 227";
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText("0795277227");
+      }
+      showToast(`✓ Đã sao chép số: ${phone}`);
+      playInteractionSound(820);
+    } catch {
+      showToast(`Hotline: ${phone}`);
+    }
+  };
 
   // --- Sound Helper ---
   const playInteractionSound = (freq = 560, duration = 0.08) => {
@@ -311,81 +350,204 @@ export default function ProfilePage() {
 
     // Mascot Group
     const mascotGroup = new THREE.Group();
-    mascotGroup.position.y = -0.85;
+    mascotGroup.position.y = -0.75;
     scene.add(mascotGroup);
 
-    // Materials
-    const matchaMat = new THREE.MeshStandardMaterial({ color: 0x6ca561, roughness: 0.55, metalness: 0.08 });
-    const innerEarMat = new THREE.MeshStandardMaterial({ color: 0xffb8b4, roughness: 0.75 });
-    const creamMat = new THREE.MeshStandardMaterial({ color: 0xf9fcf8, roughness: 0.65 });
-    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.1, metalness: 0.2 });
+    // Tabby Materials
+    const tabbyBaseMat = new THREE.MeshStandardMaterial({ color: 0x8da87c, roughness: 0.58, metalness: 0.06 });
+    const tabbyStripeMat = new THREE.MeshStandardMaterial({ color: 0x3d5c2e, roughness: 0.5, metalness: 0.08 });
+    const creamBellyMat = new THREE.MeshStandardMaterial({ color: 0xf3faef, roughness: 0.65 });
+    const innerEarPinkMat = new THREE.MeshStandardMaterial({ color: 0xffb8b4, roughness: 0.72 });
+    const nosePinkMat = new THREE.MeshStandardMaterial({ color: 0xf472b6, roughness: 0.35 });
+    const eyeMat = new THREE.MeshStandardMaterial({ color: 0x0f2413, roughness: 0.1, metalness: 0.2 });
+    const eyeIrisMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, roughness: 0.2 });
+    const ceramicCupMat = new THREE.MeshStandardMaterial({ color: 0xfdfdfd, roughness: 0.25, metalness: 0.05 });
+    const matchaLiquidMat = new THREE.MeshStandardMaterial({ color: 0x4d8c3f, roughness: 0.35, metalness: 0.1 });
+    const latteArtMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 });
 
     // Torso
-    const bodyGeo = new THREE.CylinderGeometry(0.92, 1.22, 2.05, 32);
-    const bodyMesh = new THREE.Mesh(bodyGeo, creamMat);
-    bodyMesh.position.y = 0.5;
+    const bodyGeo = new THREE.CylinderGeometry(0.85, 1.25, 1.85, 32);
+    const bodyMesh = new THREE.Mesh(bodyGeo, tabbyBaseMat);
+    bodyMesh.position.y = 0.45;
     bodyMesh.castShadow = true;
     mascotGroup.add(bodyMesh);
 
-    const stripeGeo = new THREE.CylinderGeometry(1.09, 1.16, 0.38, 32);
-    const stripeMesh = new THREE.Mesh(stripeGeo, matchaMat);
-    stripeMesh.position.y = 0.5;
-    mascotGroup.add(stripeMesh);
+    // Cream Belly Patch
+    const bellyGeo = new THREE.SphereGeometry(0.88, 24, 24);
+    const bellyMesh = new THREE.Mesh(bellyGeo, creamBellyMat);
+    bellyMesh.position.set(0, 0.42, 0.45);
+    bellyMesh.scale.set(0.9, 1.15, 0.45);
+    mascotGroup.add(bellyMesh);
+
+    // Tabby Stripes on Back
+    [-0.1, 0.35, 0.75].forEach((stripeY, sIdx) => {
+      const stripeGeo = new THREE.TorusGeometry(1.08 - sIdx * 0.06, 0.065, 8, 24, Math.PI * 1.1);
+      const stripe = new THREE.Mesh(stripeGeo, tabbyStripeMat);
+      stripe.position.set(0, stripeY, 0.08);
+      stripe.rotation.x = Math.PI / 2;
+      stripe.rotation.z = Math.PI * 0.95;
+      mascotGroup.add(stripe);
+    });
+
+    // Haunches & Paws
+    const haunchGeo = new THREE.SphereGeometry(0.48, 16, 16);
+    const haunchLeft = new THREE.Mesh(haunchGeo, tabbyBaseMat);
+    haunchLeft.position.set(-0.85, -0.32, 0.15);
+    haunchLeft.scale.set(0.9, 0.9, 1.2);
+    mascotGroup.add(haunchLeft);
+
+    const pawLeft = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), creamBellyMat);
+    pawLeft.position.set(-0.82, -0.48, 0.65);
+    pawLeft.scale.set(1, 0.7, 1.3);
+    mascotGroup.add(pawLeft);
+
+    const haunchRight = haunchLeft.clone();
+    haunchRight.position.x = 0.85;
+    mascotGroup.add(haunchRight);
+
+    const pawRight = pawLeft.clone();
+    pawRight.position.x = 0.82;
+    mascotGroup.add(pawRight);
+
+    // Front Paws holding cup
+    const frontPawLeft = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), creamBellyMat);
+    frontPawLeft.position.set(-0.35, 0.58, 0.92);
+    frontPawLeft.scale.set(1.1, 0.85, 1.3);
+    mascotGroup.add(frontPawLeft);
+
+    const frontPawRight = frontPawLeft.clone();
+    frontPawRight.position.x = 0.35;
+    mascotGroup.add(frontPawRight);
 
     // Head
     const headGroup = new THREE.Group();
-    headGroup.position.set(0, 1.72, 0);
+    headGroup.position.set(0, 1.68, 0);
     mascotGroup.add(headGroup);
 
     const headGeo = new THREE.SphereGeometry(1.18, 32, 32);
-    const headMesh = new THREE.Mesh(headGeo, matchaMat);
+    const headMesh = new THREE.Mesh(headGeo, tabbyBaseMat);
+    headMesh.scale.set(1.16, 0.96, 1.05);
     headMesh.castShadow = true;
     headGroup.add(headMesh);
 
+    // Tabby "M" Marking on Forehead
+    const mStripeGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.42, 8);
+    const centerM = new THREE.Mesh(mStripeGeo, tabbyStripeMat);
+    centerM.position.set(0, 0.52, 1.05);
+    centerM.rotation.x = -0.35;
+    headGroup.add(centerM);
+
+    const leftM1 = new THREE.Mesh(mStripeGeo, tabbyStripeMat);
+    leftM1.position.set(-0.24, 0.5, 1.02);
+    leftM1.rotation.set(-0.35, 0, -0.35);
+    headGroup.add(leftM1);
+
+    const rightM1 = leftM1.clone();
+    rightM1.position.x = 0.24;
+    rightM1.rotation.z = 0.35;
+    headGroup.add(rightM1);
+
     // Ears
-    const earOuterGeo = new THREE.SphereGeometry(0.4, 16, 16);
-    const earLeft = new THREE.Mesh(earOuterGeo, matchaMat);
-    earLeft.position.set(-0.88, 0.88, -0.1);
+    const earGeo = new THREE.ConeGeometry(0.44, 0.68, 16);
+    const earLeft = new THREE.Mesh(earGeo, tabbyBaseMat);
+    earLeft.position.set(-0.76, 0.98, 0.05);
+    earLeft.rotation.set(-0.15, 0.15, -0.38);
     headGroup.add(earLeft);
-    const earInnerLeft = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), innerEarMat);
-    earInnerLeft.position.set(-0.88, 0.88, 0.1);
+
+    const earInnerLeft = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.5, 16), innerEarPinkMat);
+    earInnerLeft.position.set(-0.74, 0.95, 0.16);
+    earInnerLeft.rotation.set(-0.15, 0.15, -0.38);
     earInnerLeft.scale.z = 0.5;
     headGroup.add(earInnerLeft);
 
     const earRight = earLeft.clone();
-    earRight.position.x = 0.88;
+    earRight.position.x = 0.76;
+    earRight.rotation.set(-0.15, -0.15, 0.38);
     headGroup.add(earRight);
+
     const earInnerRight = earInnerLeft.clone();
-    earInnerRight.position.x = 0.88;
+    earInnerRight.position.x = 0.74;
+    earInnerRight.rotation.set(-0.15, -0.15, 0.38);
     headGroup.add(earInnerRight);
 
-    // Eyes
-    const eyeGeo = new THREE.SphereGeometry(0.12, 16, 16);
-    const eyeLeftMesh = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeLeftMesh.position.set(-0.42, 0.16, 1.02);
+    // Eyes with emerald iris and sparkles
+    const eyeIrisGeo = new THREE.SphereGeometry(0.18, 16, 16);
+    const eyeIrisLeft = new THREE.Mesh(eyeIrisGeo, eyeIrisMat);
+    eyeIrisLeft.position.set(-0.44, 0.14, 0.98);
+    eyeIrisLeft.scale.set(1, 1.15, 0.35);
+    headGroup.add(eyeIrisLeft);
+
+    const eyeLeftMesh = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 16), eyeMat);
+    eyeLeftMesh.position.set(-0.44, 0.14, 1.05);
+    eyeLeftMesh.scale.set(0.85, 1.25, 0.35);
     headGroup.add(eyeLeftMesh);
+
+    const eyeIrisRight = eyeIrisLeft.clone();
+    eyeIrisRight.position.x = 0.44;
+    headGroup.add(eyeIrisRight);
+
     const eyeRightMesh = eyeLeftMesh.clone();
-    eyeRightMesh.position.x = 0.42;
+    eyeRightMesh.position.x = 0.44;
     headGroup.add(eyeRightMesh);
 
-    // Snout & Nose
-    const snoutMesh = new THREE.Mesh(new THREE.SphereGeometry(0.34, 16, 16), creamMat);
-    snoutMesh.scale.set(1.22, 0.82, 0.62);
-    snoutMesh.position.set(0, -0.16, 0.98);
-    headGroup.add(snoutMesh);
+    const sparkMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const sparkBig = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), sparkMat);
+    sparkBig.position.set(-0.47, 0.19, 1.1);
+    headGroup.add(sparkBig);
 
-    const noseMesh = new THREE.Mesh(new THREE.SphereGeometry(0.085, 8, 8), eyeMat);
-    noseMesh.position.set(0, -0.1, 1.16);
+    const sparkBigR = sparkBig.clone();
+    sparkBigR.position.x = 0.41;
+    headGroup.add(sparkBigR);
+
+    // Muzzle & Nose
+    const muzzleL = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 16), creamBellyMat);
+    muzzleL.position.set(-0.16, -0.16, 1.02);
+    muzzleL.scale.set(1, 0.75, 0.65);
+    headGroup.add(muzzleL);
+
+    const muzzleR = muzzleL.clone();
+    muzzleR.position.x = 0.16;
+    headGroup.add(muzzleR);
+
+    const noseMesh = new THREE.Mesh(new THREE.ConeGeometry(0.08, 0.09, 3), nosePinkMat);
+    noseMesh.position.set(0, -0.06, 1.15);
+    noseMesh.rotation.z = Math.PI;
+    noseMesh.rotation.x = 0.2;
     headGroup.add(noseMesh);
 
-    // Cheeks
-    const cheekMesh = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), innerEarMat);
-    cheekMesh.scale.z = 0.15;
-    cheekMesh.position.set(-0.72, -0.12, 0.98);
-    headGroup.add(cheekMesh);
-    const cheekRightMesh = cheekMesh.clone();
-    cheekRightMesh.position.x = 0.72;
-    headGroup.add(cheekRightMesh);
+    // Swishing Tail
+    const tailGroup = new THREE.Group();
+    tailGroup.position.set(0, -0.32, -0.65);
+    mascotGroup.add(tailGroup);
+
+    const tailCurve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0.2, 0.3, -0.4),
+      new THREE.Vector3(0.45, 0.75, -0.3),
+      new THREE.Vector3(0.35, 1.1, -0.05)
+    ]);
+    const tailMesh = new THREE.Mesh(new THREE.TubeGeometry(tailCurve, 20, 0.13, 8, false), tabbyBaseMat);
+    tailGroup.add(tailMesh);
+
+    // Matcha Cup held between paws
+    const heldCupGroup = new THREE.Group();
+    heldCupGroup.position.set(0, 0.58, 0.88);
+    mascotGroup.add(heldCupGroup);
+
+    const cupMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.36, 0.28, 0.68, 24), ceramicCupMat);
+    heldCupGroup.add(cupMesh);
+
+    const bandMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.37, 0.33, 0.26, 24), tabbyStripeMat);
+    heldCupGroup.add(bandMesh);
+
+    const liquidMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.3, 0.1, 24), matchaLiquidMat);
+    liquidMesh.position.y = 0.28;
+    heldCupGroup.add(liquidMesh);
+
+    const foamMesh = new THREE.Mesh(new THREE.CircleGeometry(0.18, 16), latteArtMat);
+    foamMesh.rotation.x = -Math.PI / 2;
+    foamMesh.position.y = 0.34;
+    heldCupGroup.add(foamMesh);
 
     // Gyro Rings
     const orbitRingGroup = new THREE.Group();
@@ -393,11 +555,56 @@ export default function ProfilePage() {
     mascotGroup.add(orbitRingGroup);
 
     const ring1 = new THREE.Mesh(
-      new THREE.TorusGeometry(1.65, 0.02, 8, 48),
+      new THREE.TorusGeometry(1.75, 0.02, 8, 48),
       new THREE.MeshBasicMaterial({ color: 0x6ee7b7, transparent: true, opacity: 0.45, wireframe: true })
     );
     ring1.rotation.x = Math.PI / 2.3;
     orbitRingGroup.add(ring1);
+
+    const ring2 = new THREE.Mesh(
+      new THREE.TorusGeometry(1.95, 0.02, 8, 48),
+      new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4, wireframe: true })
+    );
+    ring2.rotation.x = Math.PI / 1.8;
+    orbitRingGroup.add(ring2);
+
+    // Orbiting 3D Badges
+    const textureLoader = new THREE.TextureLoader();
+    const badgeCoinGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.07, 32);
+    const rimGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
+    const rimTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
+    const rimGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
+
+    const cosmosBadges = [
+      { name: "Top 500 AI Riser VN", logo: "https://img.icons8.com/color/96/google-logo.png", r: 2.2, speed: 0.0035, isAward: true, y: 0.8, speech: "Meo! Top 500 AI Riser Vietnam của Google nè! 🏆🐾" },
+      { name: "5-Day Vibe Coding", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg", r: 2.1, speed: -0.0032, isAward: true, y: 0.4, speech: "Meo! Khóa Vibe Coding AI Agents Kaggle & Google siêu đỉnh! ⚡🐾" },
+      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", r: 2.9, speed: 0.0028, isIDE: true, y: 0.95, speech: "Meo! VS Code là IDE ruột của Quang để build AI & Web! 💻🐾" },
+      { name: "Python", logo: "https://img.icons8.com/color/96/python.png", r: 2.7, speed: -0.0025, y: 0.2, speech: "Meo! Python dùng huấn luyện Deep Learning & AI Agents! 🐍🐾" },
+      { name: "React", logo: "https://img.icons8.com/color/96/react-native.png", r: 3.1, speed: 0.003, isIDE: true, y: -0.2, speech: "Meo! React và Three.js tạo nên trải nghiệm 3D mượt mà! ⚛️🐾" },
+      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", r: 2.5, speed: -0.0028, y: -0.4, speech: "Meo! TypeScript code an toàn kiểu dữ liệu, không lo bug! 🛡️🐾" },
+    ];
+
+    const badgeMeshes: any[] = [];
+    cosmosBadges.forEach((b, idx) => {
+      const coin = new THREE.Group();
+      const rim = new THREE.Mesh(badgeCoinGeo, b.isAward ? rimGold : (b.isIDE ? rimTech : rimGreen));
+      rim.rotation.x = Math.PI / 2;
+      coin.add(rim);
+
+      const texture = textureLoader.load(b.logo);
+      const front = new THREE.Mesh(
+        new THREE.CircleGeometry(0.32, 32),
+        new THREE.MeshBasicMaterial({ map: texture, transparent: true })
+      );
+      front.position.z = 0.04;
+      coin.add(front);
+
+      const theta = (idx / cosmosBadges.length) * Math.PI * 2;
+      coin.position.set(Math.sin(theta) * b.r, b.y, Math.cos(theta) * b.r);
+      (coin as any).userData = { ...b, theta };
+      scene.add(coin);
+      badgeMeshes.push(coin);
+    });
 
     // Store refs
     threeStateRef.current = {
@@ -407,7 +614,10 @@ export default function ProfilePage() {
       controls,
       mascotGroup,
       headGroup,
+      tailGroup,
+      heldCupGroup,
       orbitRingGroup,
+      badgeMeshes,
       isAutoRotate: true,
     };
 
@@ -418,11 +628,22 @@ export default function ProfilePage() {
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const time = Date.now() * 0.002;
-      mascotGroup.position.y = -0.78 + Math.sin(time) * 0.05;
+      mascotGroup.position.y = -0.75 + Math.sin(time) * 0.045;
+      heldCupGroup.position.y = 0.58 + Math.cos(time * 1.4) * 0.03;
+      tailGroup.rotation.y = Math.sin(time * 2.2) * 0.32;
       orbitRingGroup.rotation.y += 0.008;
 
+      badgeMeshes.forEach((coin) => {
+        const ud = coin.userData;
+        ud.theta += ud.speed;
+        coin.position.x = Math.sin(ud.theta) * ud.r;
+        coin.position.z = Math.cos(ud.theta) * ud.r;
+        coin.position.y = ud.y + Math.sin(time * 0.9 + ud.theta) * 0.1;
+        coin.lookAt(camera.position);
+      });
+
       if (threeStateRef.current?.isAutoRotate) {
-        mascotGroup.rotation.y = Math.sin(time * 0.4) * 0.22;
+        mascotGroup.rotation.y = Math.sin(time * 0.4) * 0.2;
       }
 
       if (controls) controls.update();
@@ -681,22 +902,30 @@ export default function ProfilePage() {
               >
                 <Instagram className="w-5 h-5 shrink-0" strokeWidth={1.75} />
               </a>
-              <a
-                href="mailto:poiairo4628@gmail.com"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-amber-200 text-amber-600 hover:border-amber-600 hover:bg-amber-50 active:scale-95 transition-all shadow-xs"
-                title="Gmail"
+              <button
+                type="button"
+                onClick={() => {
+                  setIsContactModalOpen(true);
+                  playInteractionSound(640);
+                }}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-amber-200 text-amber-600 hover:border-amber-600 hover:bg-amber-50 active:scale-95 transition-all shadow-xs cursor-pointer"
+                title="Liên hệ Gmail / Zalo / SĐT"
                 aria-label="Gmail"
               >
                 <Mail className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </a>
-              <a
-                href="tel:0795277227"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-emerald-200 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 active:scale-95 transition-all shadow-xs"
-                title="Hotline: 0795 277 227"
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsContactModalOpen(true);
+                  playInteractionSound(640);
+                }}
+                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-emerald-200 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 active:scale-95 transition-all shadow-xs cursor-pointer"
+                title="Hotline & Zalo: 0795 277 227"
                 aria-label="Điện thoại"
               >
                 <Phone className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </a>
+              </button>
             </div>
 
             {/* Core Skills Dashboard */}
@@ -735,76 +964,33 @@ export default function ProfilePage() {
 
           {/* Right 3D Mascot Canvas Column */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            <div className="w-full max-w-md p-3.5 rounded-3xl bg-white/75 backdrop-blur-md border border-emerald-600/25 shadow-sm space-y-3">
-              {/* 3D Header Toolstrip */}
-              <div className="flex items-center justify-between px-1">
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-900 bg-emerald-100 px-2.5 py-1 rounded-full">
-                  <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" strokeWidth={2} />
-                  Mascot 3D Tương Tác
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={() => {
-                      if (threeStateRef.current) {
-                        threeStateRef.current.isAutoRotate = !threeStateRef.current.isAutoRotate;
-                      }
-                      playInteractionSound(520);
-                    }}
-                    className="min-h-[34px] px-2.5 py-1 text-xs font-semibold rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 border border-emerald-200 transition-all inline-flex items-center gap-1"
-                    title="Bật/Tắt tự xoay"
-                  >
-                    <RotateCw className="w-3 h-3 shrink-0" strokeWidth={2} />
-                    <span>Tự xoay</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (threeStateRef.current?.camera) {
-                        threeStateRef.current.camera.position.set(0, 0.6, 8.8);
-                        threeStateRef.current.mascotGroup.rotation.y = 0;
-                      }
-                      playInteractionSound(620);
-                    }}
-                    className="min-h-[34px] px-2.5 py-1 text-xs font-semibold rounded-xl bg-emerald-50 hover:bg-emerald-100 active:scale-95 text-emerald-800 border border-emerald-200 transition-all inline-flex items-center gap-1"
-                    title="Đặt lại góc camera"
-                  >
-                    <Target className="w-3 h-3 shrink-0" strokeWidth={2} />
-                    <span>Góc chuẩn</span>
-                  </button>
-                </div>
-              </div>
-
+            <div className="w-full max-w-lg p-3 sm:p-4 rounded-3xl bg-white/80 backdrop-blur-md border border-emerald-600/20 shadow-md space-y-3">
               {/* Canvas Container */}
               <div
                 ref={canvasContainerRef}
-                className="relative w-full h-[360px] sm:h-[400px] rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing bg-gradient-to-b from-white to-emerald-50/50 border border-emerald-200/50 touch-pan-y"
+                className="relative w-full h-[380px] sm:h-[420px] rounded-2xl overflow-hidden cursor-grab active:cursor-grabbing bg-gradient-to-b from-[#eef7ee] via-white to-emerald-50/70 border border-emerald-200/60 touch-pan-y shadow-inner"
               >
                 {!is3DLoaded && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-[#f6faf4]/90 z-10">
                     <Loader2 className="w-7 h-7 text-emerald-600 animate-spin shrink-0" strokeWidth={2} />
-                    <span className="text-xs font-semibold text-emerald-900">Đang nạp không gian 3D...</span>
+                    <span className="text-xs font-semibold text-emerald-900">Đang nạp chú mèo Matcha 3D...</span>
                   </div>
                 )}
                 {!isWebGLSupported && (
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-white/95 z-10">
                     <Compass className="w-8 h-8 text-emerald-600 mb-2 shrink-0" />
-                    <h4 className="text-sm font-bold text-emerald-950">Mascot 3D</h4>
+                    <h4 className="text-sm font-bold text-emerald-950">Mèo Mướp Matcha 3D</h4>
                     <p className="text-xs text-slate-500 mt-1">
-                      Thiết bị đang chạy chế độ tiết kiệm năng lượng. Vui lòng kích hoạt WebGL để hiển thị 3D.
+                      Thiết bị đang chạy chế độ tiết kiệm năng lượng. Vui lòng kích hoạt WebGL để hiển thị không gian 3D.
                     </p>
                   </div>
                 )}
               </div>
 
               {/* Dynamic Speech Bubble */}
-              <div className="relative p-3 rounded-2xl bg-white border border-emerald-300 text-xs text-center font-medium text-emerald-950 shadow-xs">
+              <div className="relative p-3.5 rounded-2xl bg-gradient-to-r from-emerald-50 via-white to-emerald-50 border border-emerald-300/80 text-xs text-center font-medium text-emerald-950 shadow-xs leading-relaxed">
                 <span>{speechText}</span>
               </div>
-
-              {/* Mobile Touch Hint */}
-              <p className="text-[11px] text-center text-slate-500 font-medium inline-flex items-center justify-center w-full gap-1">
-                <Compass className="w-3 h-3 text-emerald-600 shrink-0" />
-                Dùng 1 ngón tay xoay 3D • Chạm để tương tác
-              </p>
             </div>
           </div>
         </section>
@@ -1132,6 +1318,164 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
+
+      {/* --- Contact Modal (Direct Gmail Web, Direct Call, 1-Click Copy, Zalo) --- */}
+      {isContactModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-md animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="fixed inset-0" onClick={() => setIsContactModalOpen(false)} />
+          <div className="relative w-full max-w-md sm:max-w-lg bg-white rounded-3xl p-6 sm:p-7 shadow-2xl z-10 border border-emerald-200 space-y-5">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  Kênh Liên Lạc
+                </span>
+                <h3 className="text-xl sm:text-2xl font-black text-emerald-950 mt-1">
+                  KẾT NỐI VỚI QUANG
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+                  Chọn kênh tiện lợi nhất hoặc sao chép thông tin chỉ với 1 chạm.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsContactModalOpen(false)}
+                className="min-h-[40px] min-w-[40px] flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 active:scale-95 transition-all cursor-pointer"
+                aria-label="Đóng"
+              >
+                <X className="w-5 h-5 shrink-0" strokeWidth={2} />
+              </button>
+            </div>
+
+            {/* Contact Methods */}
+            <div className="space-y-3.5">
+              {/* Gmail Channel */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-50/70 to-orange-50/50 border border-amber-200/80 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="p-2 rounded-xl bg-amber-100 text-amber-700 shrink-0">
+                      <Mail className="w-5 h-5" strokeWidth={2} />
+                    </span>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Gmail Cá Nhân</h4>
+                      <p className="text-sm font-bold text-slate-900 select-all">poiairo4628@gmail.com</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-1">
+                  <a
+                    href="https://mail.google.com/mail/?view=cm&fs=1&to=poiairo4628@gmail.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 min-h-[40px] px-3 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+                    <span>Mở Gmail Web</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleCopyEmail}
+                    className="flex-1 min-h-[40px] px-3 py-2 rounded-xl bg-white hover:bg-amber-100/60 active:scale-95 text-amber-900 border border-amber-300 text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5 shrink-0" />
+                    <span>Sao chép Email</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Phone & Zalo Channel */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/70 to-teal-50/50 border border-emerald-200/80 space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2.5">
+                    <span className="p-2 rounded-xl bg-emerald-100 text-emerald-700 shrink-0">
+                      <Phone className="w-5 h-5" strokeWidth={2} />
+                    </span>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Hotline & Zalo</h4>
+                      <p className="text-sm font-bold text-slate-900 select-all">0795 277 227</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 pt-1">
+                  <a
+                    href="tel:0795277227"
+                    className="min-h-[40px] px-2 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold inline-flex items-center justify-center gap-1 transition-all shadow-xs"
+                  >
+                    <Phone className="w-3.5 h-3.5 shrink-0" />
+                    <span>Gọi Ngay</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={handleCopyPhone}
+                    className="min-h-[40px] px-2 py-2 rounded-xl bg-white hover:bg-emerald-100/60 active:scale-95 text-emerald-900 border border-emerald-300 text-xs font-bold inline-flex items-center justify-center gap-1 transition-all cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5 shrink-0" />
+                    <span>Sao chép</span>
+                  </button>
+                  <a
+                    href="https://zalo.me/0795277227"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="min-h-[40px] px-2 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xs font-bold inline-flex items-center justify-center gap-1 transition-all shadow-xs"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>Zalo Chat</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Network Links */}
+            <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-2">
+              <a
+                href="https://github.com/Wothing0406"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 transition-all"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>GitHub</span>
+              </a>
+              <a
+                href="https://www.facebook.com/NgDoQ"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold inline-flex items-center gap-1.5 transition-all"
+              >
+                <Facebook className="w-3.5 h-3.5" />
+                <span>Facebook</span>
+              </a>
+              <a
+                href="https://www.instagram.com/quangcogo0406/"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs font-bold inline-flex items-center gap-1.5 transition-all"
+              >
+                <Instagram className="w-3.5 h-3.5" />
+                <span>Instagram</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* --- Toast Notification Pop-up --- */}
+      {toastMessage && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300">
+          <div className="px-4 py-2.5 rounded-2xl bg-slate-900/90 text-white backdrop-blur-md shadow-xl text-xs sm:text-sm font-semibold inline-flex items-center gap-2 border border-white/10 animate-bounce">
+            <Check className="w-4 h-4 text-emerald-400 shrink-0" strokeWidth={2.5} />
+            <span>{toastMessage}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+

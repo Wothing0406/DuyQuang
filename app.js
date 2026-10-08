@@ -5,9 +5,11 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     initSoundSystem();
+    initContactModalAndToast();
     initThreeJSMascot();
     initCertificatesLightbox();
     initCertificatesFilter();
+    initAchievementReactions();
     initMatchaGame();
     initMobileBottomDock();
     initGSAPAnimations();
@@ -17,14 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
 let audioCtx = null;
 let soundEnabled = true;
 
+const soundOnSvg = '<svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>';
+const soundOffSvg = '<svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+
 function initSoundSystem() {
     const toggleBtn = document.getElementById('sound-toggle-btn');
     const soundIcon = document.getElementById('sound-icon');
 
-    if (toggleBtn) {
+    if (toggleBtn && soundIcon) {
+        soundIcon.innerHTML = soundOnSvg;
         toggleBtn.addEventListener('click', () => {
             soundEnabled = !soundEnabled;
-            soundIcon.textContent = soundEnabled ? '🔊' : '🔇';
+            soundIcon.innerHTML = soundEnabled ? soundOnSvg : soundOffSvg;
             toggleBtn.setAttribute('title', soundEnabled ? 'Tắt âm thanh' : 'Bật âm thanh');
             if (soundEnabled) playPopSound(600, 0.08);
         });
@@ -92,87 +98,210 @@ function playCelebrationChime() {
     }
 }
 
-// --- 1. Three.js Mascot (Matcha Bear) & 3D Interactive Floating Badges ---
+// --- 1. Contact Options Modal & Toast Notification System ---
+function initContactModalAndToast() {
+    const contactModal = document.getElementById('contact-modal');
+    const closeBtn = document.getElementById('contact-modal-close-btn');
+    const backdrop = document.getElementById('contact-modal-backdrop');
+    const btnEmail = document.getElementById('btn-contact-email');
+    const btnPhone = document.getElementById('btn-contact-phone');
+    const copyEmailBtn = document.getElementById('btn-copy-email');
+    const copyPhoneBtn = document.getElementById('btn-copy-phone');
+    const toast = document.getElementById('toast-notification');
+    const toastMsg = document.getElementById('toast-message');
+
+    let toastTimer = null;
+    function showToast(text) {
+        if (!toast || !toastMsg) return;
+        toastMsg.textContent = text;
+        toast.classList.remove('hidden');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 2600);
+    }
+
+    function openModal() {
+        if (!contactModal) return;
+        contactModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        playPopSound(660, 0.06);
+    }
+
+    function closeModal() {
+        if (!contactModal) return;
+        contactModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    if (btnEmail) btnEmail.addEventListener('click', openModal);
+    if (btnPhone) btnPhone.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+
+    // Copy Email to Clipboard
+    if (copyEmailBtn) {
+        copyEmailBtn.addEventListener('click', async () => {
+            const email = 'poiairo4628@gmail.com';
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(email);
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = email;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                showToast(`✓ Đã sao chép email: ${email}`);
+                playPopSound(820, 0.08);
+            } catch (err) {
+                showToast(`Email: ${email}`);
+            }
+        });
+    }
+
+    // Copy Phone to Clipboard
+    if (copyPhoneBtn) {
+        copyPhoneBtn.addEventListener('click', async () => {
+            const phone = '0795 277 227';
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText('0795277227');
+                } else {
+                    const ta = document.createElement('textarea');
+                    ta.value = '0795277227';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(ta);
+                }
+                showToast(`✓ Đã sao chép số: ${phone}`);
+                playPopSound(820, 0.08);
+            } catch (err) {
+                showToast(`Hotline: ${phone}`);
+            }
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactModal && !contactModal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+}
+
+// --- 2. Three.js 3D Matcha Tabby Cat & Coding Cosmos Badges ---
 let scene, camera, renderer, controls;
-let mascotGroup, headGroup, eyeLeft, eyeRight, heldCupGroup;
+let mascotGroup, headGroup, eyeLeft, eyeRight, heldCupGroup, tailGroup;
 let orbitRingGroup;
 let targetHeadRotY = 0, targetHeadRotX = 0;
 let isBlinking = false;
 let autoRotateActive = true;
 let floatingMeshes = [];
 
-// Floating 3D Badges Data (Includes Top 500 Google AI & Kaggle!)
-const floatingIconsData = [
-    // Top Prestigious Achievements (Featured Orbit)
+// Coding Cosmos: Floating 3D Planetary Badges (IDEs, Languages & Google AI)
+const codingCosmosBadges = [
     {
         type: 'award',
-        logoUrl: 'https://img.icons8.com/color/96/google-logo.png',
         name: 'Top 500 AI Riser Vietnam',
-        info: 'Quang vinh dự đạt Top 500 AI Riser Vietnam 2026 (#BuildwithGoogleAI) do Google for Developers chứng nhận! 🏆🤖'
+        logoUrl: 'https://img.icons8.com/color/96/google-logo.png',
+        orbitSpeed: 0.0035,
+        radius: 2.2,
+        inclination: 0.15,
+        yOffset: 0.85,
+        catSpeech: 'Meo! Thành tích Top 500 AI Riser Việt Nam của Google nè! Tự hào về Quang ghê luôn á! 🏆🐾'
     },
     {
         type: 'award',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg',
         name: '5-Day Vibe Coding Kaggle',
-        info: 'Quang đã xuất sắc hoàn thành khóa 5-Day AI Agents: Intensive Vibe Coding Course của Kaggle & Google! ⚡🔥'
+        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg',
+        orbitSpeed: -0.0032,
+        radius: 2.1,
+        inclination: -0.25,
+        yOffset: 0.45,
+        catSpeech: 'Meo! Chứng nhận 5-Day Vibe Coding Kaggle & Google siêu cháy! Xây dựng AI Agents đỉnh chóp! ⚡🐾'
     },
-
-    // Tech Skills
     {
-        type: 'skill',
+        type: 'ide',
+        name: 'VS Code',
+        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
+        orbitSpeed: 0.0028,
+        radius: 2.9,
+        inclination: 0.35,
+        yOffset: 0.95,
+        catSpeech: 'Meo! VS Code là IDE ruột của Quang để build dự án AI, React & hệ thống 3D Web! 💻🐾'
+    },
+    {
+        type: 'language',
+        name: 'Python',
         logoUrl: 'https://img.icons8.com/color/96/python.png',
-        name: 'Python AI',
-        info: 'Quang dùng Python chủ yếu để huấn luyện mô hình AI, phát triển AI Agents và xử lý dữ liệu lớn! 🐍'
+        orbitSpeed: -0.0025,
+        radius: 2.7,
+        inclination: -0.15,
+        yOffset: 0.2,
+        catSpeech: 'Meo! Python dùng để train Deep Learning, PyTorch & xây dựng Agentic AI! 🐍🐾'
     },
     {
-        type: 'skill',
+        type: 'framework',
+        name: 'React & Three.js',
         logoUrl: 'https://img.icons8.com/color/96/react-native.png',
-        name: 'React & UI',
-        info: 'Quang thiết kế giao diện React hiện đại, tối ưu 3D Web với Three.js và trải nghiệm người dùng cao cấp! ⚛️'
+        orbitSpeed: 0.003,
+        radius: 3.1,
+        inclination: 0.2,
+        yOffset: -0.2,
+        catSpeech: 'Meo! React và Three.js là bộ đôi giúp website này có giao diện 3D sống động đó! ⚛️🐾'
     },
     {
-        type: 'skill',
-        logoUrl: 'https://img.icons8.com/color/96/nodejs.png',
-        name: 'Node.js Backend',
-        info: 'Quang xây dựng hệ thống máy chủ Node.js hiệu năng cao, RESTful API và real-time WebSocket! 🟢'
+        type: 'language',
+        name: 'TypeScript',
+        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
+        orbitSpeed: -0.0028,
+        radius: 2.5,
+        inclination: 0.4,
+        yOffset: -0.4,
+        catSpeech: 'Meo! TypeScript gõ code chuẩn chỉnh, an toàn kiểu dữ liệu và không lo bug! 🛡️🐾'
     },
     {
-        type: 'skill',
+        type: 'framework',
+        name: 'PyTorch AI',
+        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg',
+        orbitSpeed: 0.0026,
+        radius: 2.85,
+        inclination: -0.3,
+        yOffset: 0.6,
+        catSpeech: 'Meo! PyTorch là vũ khí huấn luyện Neural Network và mô hình học sâu của Quang! 🔥🐾'
+    },
+    {
+        type: 'tool',
+        name: 'Docker',
+        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
+        orbitSpeed: -0.003,
+        radius: 3.2,
+        inclination: 0.1,
+        yOffset: 0.1,
+        catSpeech: 'Meo! Docker đóng gói môi trường chuẩn DevOps, chạy đồng nhất mọi nơi! 🐳🐾'
+    },
+    {
+        type: 'database',
+        name: 'SQL Database',
         logoUrl: 'https://img.icons8.com/color/96/mysql-logo.png',
-        name: 'MySQL & SQL',
-        info: 'Quang thiết kế kiến trúc cơ sở dữ liệu quan hệ tối ưu, truy vấn phân tích dữ liệu tốc độ cao! 🐬'
-    },
-
-    // Social Contacts
-    {
-        type: 'contact',
-        logoUrl: 'https://img.icons8.com/color/96/facebook-new.png',
-        name: 'Facebook',
-        url: 'https://www.facebook.com/NgDoQ'
+        orbitSpeed: 0.0024,
+        radius: 2.6,
+        inclination: -0.2,
+        yOffset: -0.35,
+        catSpeech: 'Meo! Thiết kế cơ sở dữ liệu quan hệ và tối ưu truy vấn SQL đỉnh cao! 🐬🐾'
     },
     {
-        type: 'contact',
-        logoUrl: 'https://img.icons8.com/color/96/instagram-new.png',
-        name: 'Instagram',
-        url: 'https://www.instagram.com/quangcogo0406/'
-    },
-    {
-        type: 'contact',
-        logoUrl: 'https://img.icons8.com/color/96/github.png',
+        type: 'tool',
         name: 'GitHub',
-        url: 'https://github.com/Wothing0406'
-    },
-    {
-        type: 'contact',
-        logoUrl: 'https://img.icons8.com/color/96/gmail-new.png',
-        name: 'Gmail',
-        url: 'mailto:poiairo4628@gmail.com'
-    },
-    {
-        type: 'contact',
-        logoUrl: 'https://img.icons8.com/color/96/phone.png',
-        name: 'Điện thoại',
-        url: 'tel:0795277227'
+        logoUrl: 'https://img.icons8.com/color/96/github.png',
+        orbitSpeed: -0.0022,
+        radius: 3.0,
+        inclination: -0.35,
+        yOffset: 0.75,
+        catSpeech: 'Meo! Mã nguồn dự án được lưu trữ và triển khai trực tiếp trên GitHub! 🚀🐾'
     }
 ];
 
@@ -192,27 +321,25 @@ function initThreeJSMascot() {
 
     if (!container) return;
 
-    // WebGL Fallback Check
     if (!isWebGLAvailable()) {
         if (loaderEl) loaderEl.classList.add('fade-out');
         if (fallbackEl) fallbackEl.classList.remove('hidden');
         return;
     }
 
-    const width = container.clientWidth || 400;
-    const height = container.clientHeight || 440;
+    const width = container.clientWidth || 420;
+    const height = container.clientHeight || 480;
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
-    // 1. Create Scene
+    // 1. Scene
     scene = new THREE.Scene();
 
-    // 2. Create Camera
-    camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0.6, 8.8);
+    // 2. Camera
+    camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0, 0.5, 8.6);
 
-    // 3. Create Renderer
+    // 3. WebGL Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    // Optimize DPR for mobile to guarantee 60fps & battery efficiency
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
     renderer.setSize(width, height);
     renderer.shadowMap.enabled = true;
@@ -220,217 +347,370 @@ function initThreeJSMascot() {
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
 
-    // 4. Orbit Controls (Configured to not block mobile vertical scroll)
+    // 4. Orbit Controls (Configured to never intercept vertical scrolling on mobile)
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
-    controls.enableZoom = false; // Prevents stealing page zoom
+    controls.enableZoom = false;
     controls.enablePan = false;
-    controls.minPolarAngle = Math.PI / 2.7;
+    controls.minPolarAngle = Math.PI / 2.8;
     controls.maxPolarAngle = Math.PI / 1.75;
     controls.minAzimuthAngle = -Math.PI / 2.2;
     controls.maxAzimuthAngle = Math.PI / 2.2;
-    controls.autoRotate = false; // We use our own customized auto-rotate
-    controls.autoRotateSpeed = 1.2;
+    controls.autoRotate = false;
 
     // 5. Studio PBR Lighting Setup
-    const ambientLight = new THREE.AmbientLight(0xf2f8ee, 0.9);
+    const ambientLight = new THREE.AmbientLight(0xf4faf0, 0.95);
     scene.add(ambientLight);
 
-    // Main Warm Key Light
-    const dirLight = new THREE.DirectionalLight(0xfffaea, 0.85);
+    const dirLight = new THREE.DirectionalLight(0xfffaeb, 0.9);
     dirLight.position.set(6, 9, 6);
     dirLight.castShadow = true;
     dirLight.shadow.mapSize.width = 1024;
     dirLight.shadow.mapSize.height = 1024;
-    dirLight.shadow.camera.near = 0.5;
-    dirLight.shadow.camera.far = 25;
     scene.add(dirLight);
 
-    // Cool Cyan/Blue Rim Light (Back-left rim for 3D depth)
-    const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.7);
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.75);
     rimLight.position.set(-6, 5, -5);
     scene.add(rimLight);
 
-    // Warm Underfill Point Light
-    const pointLight = new THREE.PointLight(0xa7f3d0, 1.0, 12);
-    pointLight.position.set(-2, -1.5, 3);
+    const pointLight = new THREE.PointLight(0xa7f3d0, 1.1, 12);
+    pointLight.position.set(-2, -1.2, 3.5);
     scene.add(pointLight);
 
-    // 6. Mascot Main Group
+    // 6. 3D Matcha Tabby Cat Model (Mèo Mướp Matcha Cầm Ly Latte)
     mascotGroup = new THREE.Group();
-    mascotGroup.position.y = -0.85;
+    mascotGroup.position.y = -0.75;
     scene.add(mascotGroup);
 
-    // Mascot PBR Materials
-    const matchaMat = new THREE.MeshStandardMaterial({
-        color: 0x6ca561, // Premium Matcha Green
-        roughness: 0.55,
+    // Tabby Materials
+    const tabbyBaseMat = new THREE.MeshStandardMaterial({
+        color: 0x8da87c, // Matcha tea fur base
+        roughness: 0.58,
+        metalness: 0.06
+    });
+
+    const tabbyStripeMat = new THREE.MeshStandardMaterial({
+        color: 0x3d5c2e, // Deep olive tea green tabby stripe
+        roughness: 0.5,
         metalness: 0.08
     });
 
-    const innerEarMat = new THREE.MeshStandardMaterial({
-        color: 0xffb8b4, // Cute Soft Pink
-        roughness: 0.75
-    });
-
-    const creamMat = new THREE.MeshStandardMaterial({
-        color: 0xf9fcf8, // Cream Soft Wool
+    const creamBellyMat = new THREE.MeshStandardMaterial({
+        color: 0xf3faef, // Soft cream fur
         roughness: 0.65
     });
 
+    const innerEarPinkMat = new THREE.MeshStandardMaterial({
+        color: 0xffb8b4, // Pastel pink
+        roughness: 0.72
+    });
+
+    const nosePinkMat = new THREE.MeshStandardMaterial({
+        color: 0xf472b6, // Rosy button nose
+        roughness: 0.35
+    });
+
     const eyeMat = new THREE.MeshStandardMaterial({
-        color: 0x18181b, // Glossy Black
+        color: 0x0f2413, // Deep glossy dark pupil
         roughness: 0.1,
         metalness: 0.2
     });
 
-    const strawMat = new THREE.MeshStandardMaterial({
-        color: 0xf472b6, // Pastel Pink Straw
-        roughness: 0.35
+    const eyeIrisMat = new THREE.MeshStandardMaterial({
+        color: 0x22c55e, // Emerald anime cat iris
+        roughness: 0.2
     });
 
-    // Body (Torso with soft sweater)
-    const bodyGeo = new THREE.CylinderGeometry(0.92, 1.22, 2.05, 32);
-    const bodyMesh = new THREE.Mesh(bodyGeo, creamMat);
-    bodyMesh.position.y = 0.5;
+    const ceramicCupMat = new THREE.MeshStandardMaterial({
+        color: 0xfdfdfd,
+        roughness: 0.25,
+        metalness: 0.05
+    });
+
+    const matchaLiquidMat = new THREE.MeshStandardMaterial({
+        color: 0x4d8c3f,
+        roughness: 0.35,
+        metalness: 0.1
+    });
+
+    const latteArtMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.8
+    });
+
+    // --- Cat Body (Chubby seated feline body) ---
+    const bodyGeo = new THREE.CylinderGeometry(0.85, 1.25, 1.85, 32);
+    const bodyMesh = new THREE.Mesh(bodyGeo, tabbyBaseMat);
+    bodyMesh.position.y = 0.45;
     bodyMesh.castShadow = true;
     bodyMesh.receiveShadow = true;
     mascotGroup.add(bodyMesh);
 
-    // Sweater Green Stripe
-    const stripeGeo = new THREE.CylinderGeometry(1.09, 1.16, 0.38, 32);
-    const stripeMesh = new THREE.Mesh(stripeGeo, matchaMat);
-    stripeMesh.position.y = 0.5;
-    mascotGroup.add(stripeMesh);
+    // Cream Belly Patch
+    const bellyGeo = new THREE.SphereGeometry(0.88, 24, 24);
+    const bellyMesh = new THREE.Mesh(bellyGeo, creamBellyMat);
+    bellyMesh.position.set(0, 0.42, 0.45);
+    bellyMesh.scale.set(0.9, 1.15, 0.45);
+    mascotGroup.add(bellyMesh);
 
-    // Sweater Collar
-    const collarGeo = new THREE.TorusGeometry(0.88, 0.13, 16, 32);
-    const collarMesh = new THREE.Mesh(collarGeo, matchaMat);
-    collarMesh.rotation.x = Math.PI / 2;
-    collarMesh.position.y = 1.48;
-    mascotGroup.add(collarMesh);
+    // Tabby Stripes on Back & Sides (Curved segments)
+    [-0.1, 0.35, 0.75].forEach((stripeY, sIdx) => {
+        const stripeGeo = new THREE.TorusGeometry(1.08 - sIdx * 0.06, 0.065, 8, 24, Math.PI * 1.1);
+        const stripe = new THREE.Mesh(stripeGeo, tabbyStripeMat);
+        stripe.position.set(0, stripeY, 0.08);
+        stripe.rotation.x = Math.PI / 2;
+        stripe.rotation.z = Math.PI * 0.95;
+        mascotGroup.add(stripe);
+    });
 
-    // Stubby legs
-    const legGeo = new THREE.SphereGeometry(0.42, 16, 16);
-    const legLeft = new THREE.Mesh(legGeo, matchaMat);
-    legLeft.position.set(-0.62, -0.42, 0.2);
-    legLeft.scale.y = 1.25;
-    mascotGroup.add(legLeft);
+    // Seated Haunches & Back Paws
+    const haunchGeo = new THREE.SphereGeometry(0.48, 16, 16);
+    const haunchLeft = new THREE.Mesh(haunchGeo, tabbyBaseMat);
+    haunchLeft.position.set(-0.85, -0.32, 0.15);
+    haunchLeft.scale.set(0.9, 0.9, 1.2);
+    mascotGroup.add(haunchLeft);
 
-    const legRight = legLeft.clone();
-    legRight.position.x = 0.62;
-    mascotGroup.add(legRight);
+    const pawLeft = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), creamBellyMat);
+    pawLeft.position.set(-0.82, -0.48, 0.65);
+    pawLeft.scale.set(1, 0.7, 1.3);
+    mascotGroup.add(pawLeft);
 
-    // Stubby arms
-    const armGeo = new THREE.SphereGeometry(0.36, 16, 16);
-    const armLeft = new THREE.Mesh(armGeo, matchaMat);
-    armLeft.position.set(-1.12, 0.9, 0.2);
-    mascotGroup.add(armLeft);
+    const haunchRight = haunchLeft.clone();
+    haunchRight.position.x = 0.85;
+    mascotGroup.add(haunchRight);
 
-    const armRight = armLeft.clone();
-    armRight.position.set(1.12, 0.9, 0.2);
-    mascotGroup.add(armRight);
+    const pawRight = pawLeft.clone();
+    pawRight.position.x = 0.82;
+    mascotGroup.add(pawRight);
 
-    // 7. Mascot Head Group
+    // Front Paws (Holding the Matcha Latte Cup in front)
+    const frontPawGeo = new THREE.SphereGeometry(0.22, 16, 16);
+    const frontPawLeft = new THREE.Mesh(frontPawGeo, creamBellyMat);
+    frontPawLeft.position.set(-0.35, 0.58, 0.92);
+    frontPawLeft.scale.set(1.1, 0.85, 1.3);
+    mascotGroup.add(frontPawLeft);
+
+    const frontPawRight = frontPawLeft.clone();
+    frontPawRight.position.x = 0.35;
+    mascotGroup.add(frontPawRight);
+
+    // --- Cat Head Group ---
     headGroup = new THREE.Group();
-    headGroup.position.set(0, 1.72, 0);
+    headGroup.position.set(0, 1.68, 0);
     mascotGroup.add(headGroup);
 
-    // Head Base
+    // Head Base (Chubby anime cat head)
     const headGeo = new THREE.SphereGeometry(1.18, 32, 32);
-    const headMesh = new THREE.Mesh(headGeo, matchaMat);
+    const headMesh = new THREE.Mesh(headGeo, tabbyBaseMat);
+    headMesh.scale.set(1.16, 0.96, 1.05);
     headMesh.castShadow = true;
-    headMesh.receiveShadow = true;
     headGroup.add(headMesh);
 
-    // Ears Left & Right
-    const earOuterGeo = new THREE.SphereGeometry(0.4, 16, 16);
-    const earOuterLeft = new THREE.Mesh(earOuterGeo, matchaMat);
-    earOuterLeft.position.set(-0.88, 0.88, -0.1);
-    headGroup.add(earOuterLeft);
+    // Tabby "M" Marking on Forehead
+    const mStripeGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.42, 8);
+    const centerM = new THREE.Mesh(mStripeGeo, tabbyStripeMat);
+    centerM.position.set(0, 0.52, 1.05);
+    centerM.rotation.x = -0.35;
+    headGroup.add(centerM);
 
-    const earInnerGeo = new THREE.SphereGeometry(0.25, 16, 16);
-    const earInnerLeft = new THREE.Mesh(earInnerGeo, innerEarMat);
-    earInnerLeft.position.set(-0.88, 0.88, 0.1);
+    const leftM1 = new THREE.Mesh(mStripeGeo, tabbyStripeMat);
+    leftM1.position.set(-0.24, 0.5, 1.02);
+    leftM1.rotation.set(-0.35, 0, -0.35);
+    headGroup.add(leftM1);
+
+    const leftM2 = new THREE.Mesh(mStripeGeo, tabbyStripeMat);
+    leftM2.position.set(-0.44, 0.46, 0.96);
+    leftM2.rotation.set(-0.35, 0, 0.35);
+    headGroup.add(leftM2);
+
+    const rightM1 = leftM1.clone();
+    rightM1.position.x = 0.24;
+    rightM1.rotation.z = 0.35;
+    headGroup.add(rightM1);
+
+    const rightM2 = leftM2.clone();
+    rightM2.position.x = 0.44;
+    rightM2.rotation.z = -0.35;
+    headGroup.add(rightM2);
+
+    // Cheek Stripes
+    [-0.05, -0.22].forEach((stripeY) => {
+        const cheekStripeGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.32, 8);
+        const csL = new THREE.Mesh(cheekStripeGeo, tabbyStripeMat);
+        csL.position.set(-0.95, stripeY, 0.6);
+        csL.rotation.set(0, 0.8, Math.PI / 2);
+        headGroup.add(csL);
+
+        const csR = new THREE.Mesh(cheekStripeGeo, tabbyStripeMat);
+        csR.position.set(0.95, stripeY, 0.6);
+        csR.rotation.set(0, -0.8, -Math.PI / 2);
+        headGroup.add(csR);
+    });
+
+    // Cat Triangular Ears
+    const earGeo = new THREE.ConeGeometry(0.44, 0.68, 16);
+    const earLeft = new THREE.Mesh(earGeo, tabbyBaseMat);
+    earLeft.position.set(-0.76, 0.98, 0.05);
+    earLeft.rotation.set(-0.15, 0.15, -0.38);
+    headGroup.add(earLeft);
+
+    const earInnerLeft = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.5, 16), innerEarPinkMat);
+    earInnerLeft.position.set(-0.74, 0.95, 0.16);
+    earInnerLeft.rotation.set(-0.15, 0.15, -0.38);
     earInnerLeft.scale.z = 0.5;
     headGroup.add(earInnerLeft);
 
-    const earOuterRight = earOuterLeft.clone();
-    earOuterRight.position.x = 0.88;
-    headGroup.add(earOuterRight);
+    const earRight = earLeft.clone();
+    earRight.position.x = 0.76;
+    earRight.rotation.set(-0.15, -0.15, 0.38);
+    headGroup.add(earRight);
 
     const earInnerRight = earInnerLeft.clone();
-    earInnerRight.position.x = 0.88;
+    earInnerRight.position.x = 0.74;
+    earInnerRight.rotation.set(-0.15, -0.15, 0.38);
     headGroup.add(earInnerRight);
 
-    // Eyes
-    const eyeGeo = new THREE.SphereGeometry(0.12, 16, 16);
-    eyeLeft = new THREE.Mesh(eyeGeo, eyeMat);
-    eyeLeft.position.set(-0.42, 0.16, 1.02);
+    // Feline Eyes (Emerald Iris + Dark Pupil + Anime Sparkles)
+    const eyeIrisGeo = new THREE.SphereGeometry(0.18, 16, 16);
+    const eyeIrisLeft = new THREE.Mesh(eyeIrisGeo, eyeIrisMat);
+    eyeIrisLeft.position.set(-0.44, 0.14, 0.98);
+    eyeIrisLeft.scale.set(1, 1.15, 0.35);
+    headGroup.add(eyeIrisLeft);
+
+    eyeLeft = new THREE.Mesh(new THREE.SphereGeometry(0.11, 16, 16), eyeMat);
+    eyeLeft.position.set(-0.44, 0.14, 1.05);
+    eyeLeft.scale.set(0.85, 1.25, 0.35);
     headGroup.add(eyeLeft);
 
+    const eyeIrisRight = eyeIrisLeft.clone();
+    eyeIrisRight.position.x = 0.44;
+    headGroup.add(eyeIrisRight);
+
     eyeRight = eyeLeft.clone();
-    eyeRight.position.x = 0.42;
+    eyeRight.position.x = 0.44;
     headGroup.add(eyeRight);
 
-    // Eye Highlights (Cute sparkle)
-    const sparkGeo = new THREE.SphereGeometry(0.04, 8, 8);
+    // Bright White Sparkle Highlights
     const sparkMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    const sparkLeft = new THREE.Mesh(sparkGeo, sparkMat);
-    sparkLeft.position.set(-0.45, 0.2, 1.11);
-    headGroup.add(sparkLeft);
+    const sparkBig = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), sparkMat);
+    sparkBig.position.set(-0.47, 0.19, 1.1);
+    headGroup.add(sparkBig);
 
-    const sparkRight = sparkLeft.clone();
-    sparkRight.position.x = 0.39;
-    headGroup.add(sparkRight);
+    const sparkSmall = new THREE.Mesh(new THREE.SphereGeometry(0.024, 8, 8), sparkMat);
+    sparkSmall.position.set(-0.41, 0.09, 1.1);
+    headGroup.add(sparkSmall);
 
-    // Snout
-    const snoutGeo = new THREE.SphereGeometry(0.34, 16, 16);
-    const snoutMesh = new THREE.Mesh(snoutGeo, creamMat);
-    snoutMesh.scale.set(1.22, 0.82, 0.62);
-    snoutMesh.position.set(0, -0.16, 0.98);
-    headGroup.add(snoutMesh);
+    const sparkBigR = sparkBig.clone();
+    sparkBigR.position.x = 0.41;
+    headGroup.add(sparkBigR);
 
-    // Nose
-    const noseGeo = new THREE.SphereGeometry(0.085, 8, 8);
-    const noseMesh = new THREE.Mesh(noseGeo, eyeMat);
-    noseMesh.position.set(0, -0.1, 1.16);
+    const sparkSmallR = sparkSmall.clone();
+    sparkSmallR.position.x = 0.47;
+    headGroup.add(sparkSmallR);
+
+    // Feline Muzzle / Snout (:3 mouth)
+    const muzzleGeo = new THREE.SphereGeometry(0.24, 16, 16);
+    const muzzleL = new THREE.Mesh(muzzleGeo, creamBellyMat);
+    muzzleL.position.set(-0.16, -0.16, 1.02);
+    muzzleL.scale.set(1, 0.75, 0.65);
+    headGroup.add(muzzleL);
+
+    const muzzleR = muzzleL.clone();
+    muzzleR.position.x = 0.16;
+    headGroup.add(muzzleR);
+
+    // Cute Pink Button Nose
+    const noseGeo = new THREE.ConeGeometry(0.08, 0.09, 3);
+    const noseMesh = new THREE.Mesh(noseGeo, nosePinkMat);
+    noseMesh.position.set(0, -0.06, 1.15);
+    noseMesh.rotation.z = Math.PI;
+    noseMesh.rotation.x = 0.2;
     headGroup.add(noseMesh);
 
-    // Cheeks (Rosy blush)
-    const cheekGeo = new THREE.SphereGeometry(0.18, 16, 16);
-    const cheekLeft = new THREE.Mesh(cheekGeo, innerEarMat);
-    cheekLeft.scale.z = 0.15;
-    cheekLeft.position.set(-0.72, -0.12, 0.98);
-    headGroup.add(cheekLeft);
+    // 6 Feline Whiskers (3 on each side)
+    const whiskerMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    [-0.08, -0.14, -0.2].forEach((wY, wIdx) => {
+        const whiskerGeo = new THREE.CylinderGeometry(0.008, 0.008, 0.42, 6);
+        const wL = new THREE.Mesh(whiskerGeo, whiskerMat);
+        wL.position.set(-0.42, wY, 1.04);
+        wL.rotation.z = Math.PI / 2 + (wIdx - 1) * 0.22;
+        headGroup.add(wL);
 
-    const cheekRight = cheekLeft.clone();
-    cheekRight.position.x = 0.72;
-    headGroup.add(cheekRight);
+        const wR = new THREE.Mesh(whiskerGeo, whiskerMat);
+        wR.position.set(0.42, wY, 1.04);
+        wR.rotation.z = -(Math.PI / 2 + (wIdx - 1) * 0.22);
+        headGroup.add(wR);
+    });
 
-    // 8. Mini Matcha Latte Cup in Hand
+    // Rosy Blush Cheeks
+    const blushGeo = new THREE.SphereGeometry(0.16, 12, 12);
+    const blushL = new THREE.Mesh(blushGeo, innerEarPinkMat);
+    blushL.position.set(-0.68, -0.08, 0.95);
+    blushL.scale.set(1, 0.6, 0.2);
+    headGroup.add(blushL);
+
+    const blushR = blushL.clone();
+    blushR.position.x = 0.68;
+    headGroup.add(blushR);
+
+    // --- Swishing Tabby Tail (Animated in render loop) ---
+    tailGroup = new THREE.Group();
+    tailGroup.position.set(0, -0.32, -0.65);
+    mascotGroup.add(tailGroup);
+
+    const tailCurve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(0.2, 0.3, -0.4),
+        new THREE.Vector3(0.45, 0.75, -0.3),
+        new THREE.Vector3(0.35, 1.1, -0.05)
+    ]);
+    const tailGeo = new THREE.TubeGeometry(tailCurve, 20, 0.13, 8, false);
+    const tailMesh = new THREE.Mesh(tailGeo, tabbyBaseMat);
+    tailGroup.add(tailMesh);
+
+    // Tabby dark tip on tail
+    const tailTip = new THREE.Mesh(new THREE.SphereGeometry(0.14, 12, 12), tabbyStripeMat);
+    tailTip.position.set(0.35, 1.1, -0.05);
+    tailGroup.add(tailTip);
+
+    // --- 3D Matcha Latte Cup held between paws ---
     heldCupGroup = new THREE.Group();
-    heldCupGroup.position.set(0.68, 0.62, 0.85);
+    heldCupGroup.position.set(0, 0.58, 0.88);
     mascotGroup.add(heldCupGroup);
 
-    const miniCupGeo = new THREE.CylinderGeometry(0.3, 0.24, 0.62, 20);
-    const miniCupMesh = new THREE.Mesh(miniCupGeo, creamMat);
-    miniCupMesh.castShadow = true;
-    heldCupGroup.add(miniCupMesh);
+    // Ceramic Matcha Cup
+    const cupGeo = new THREE.CylinderGeometry(0.36, 0.28, 0.68, 24);
+    const cupMesh = new THREE.Mesh(cupGeo, ceramicCupMat);
+    cupMesh.castShadow = true;
+    heldCupGroup.add(cupMesh);
 
-    const miniLiquidGeo = new THREE.CylinderGeometry(0.28, 0.24, 0.12, 20);
-    const miniLiquidMesh = new THREE.Mesh(miniLiquidGeo, matchaMat);
-    miniLiquidMesh.position.y = 0.26;
-    heldCupGroup.add(miniLiquidMesh);
+    // Cup Sleeve / Band (Tea green band)
+    const bandGeo = new THREE.CylinderGeometry(0.37, 0.33, 0.26, 24);
+    const bandMesh = new THREE.Mesh(bandGeo, tabbyStripeMat);
+    heldCupGroup.add(bandMesh);
 
-    const strawGeo = new THREE.CylinderGeometry(0.03, 0.03, 0.52, 8);
-    const strawMesh = new THREE.Mesh(strawGeo, strawMat);
-    strawMesh.position.set(0.09, 0.42, 0.05);
+    // Steaming Matcha Liquid
+    const liquidGeo = new THREE.CylinderGeometry(0.34, 0.3, 0.1, 24);
+    const liquidMesh = new THREE.Mesh(liquidGeo, matchaLiquidMat);
+    liquidMesh.position.y = 0.28;
+    heldCupGroup.add(liquidMesh);
+
+    // Latte Art Foam (Cute clover / heart on top)
+    const foamGeo = new THREE.CircleGeometry(0.18, 16);
+    const foamMesh = new THREE.Mesh(foamGeo, latteArtMat);
+    foamMesh.rotation.x = -Math.PI / 2;
+    foamMesh.position.y = 0.34;
+    heldCupGroup.add(foamMesh);
+
+    // Cute Straw / Stirrer
+    const strawGeo = new THREE.CylinderGeometry(0.025, 0.025, 0.62, 8);
+    const strawMesh = new THREE.Mesh(strawGeo, innerEarPinkMat);
+    strawMesh.position.set(0.12, 0.45, 0.05);
     strawMesh.rotation.z = -0.22;
     heldCupGroup.add(strawMesh);
 
-    // 9. Holographic Gyro Orbit Rings (Around Mascot Base)
+    // 7. Holographic Gyro Orbit Rings (Around Cat Base)
     orbitRingGroup = new THREE.Group();
     orbitRingGroup.position.y = 0.4;
     mascotGroup.add(orbitRingGroup);
@@ -441,8 +721,7 @@ function initThreeJSMascot() {
         opacity: 0.45,
         wireframe: true
     });
-    const ringGeo1 = new THREE.TorusGeometry(1.65, 0.02, 8, 48);
-    const ringMesh1 = new THREE.Mesh(ringGeo1, ringMat1);
+    const ringMesh1 = new THREE.Mesh(new THREE.TorusGeometry(1.75, 0.02, 8, 48), ringMat1);
     ringMesh1.rotation.x = Math.PI / 2.3;
     ringMesh1.rotation.y = 0.2;
     orbitRingGroup.add(ringMesh1);
@@ -453,98 +732,80 @@ function initThreeJSMascot() {
         opacity: 0.4,
         wireframe: true
     });
-    const ringGeo2 = new THREE.TorusGeometry(1.85, 0.02, 8, 48);
-    const ringMesh2 = new THREE.Mesh(ringGeo2, ringMat2);
+    const ringMesh2 = new THREE.Mesh(new THREE.TorusGeometry(1.95, 0.02, 8, 48), ringMat2);
     ringMesh2.rotation.x = Math.PI / 1.8;
     ringMesh2.rotation.z = -0.3;
     orbitRingGroup.add(ringMesh2);
 
     // Floor Soft Shadow
-    const shadowGeo = new THREE.RingGeometry(0.01, 1.45, 32);
-    const shadowMat = new THREE.MeshBasicMaterial({
-        color: 0xc6e4c3,
-        transparent: true,
-        opacity: 0.5,
-        side: THREE.DoubleSide
-    });
-    const shadowFloor = new THREE.Mesh(shadowGeo, shadowMat);
+    const shadowFloor = new THREE.Mesh(
+        new THREE.RingGeometry(0.01, 1.45, 32),
+        new THREE.MeshBasicMaterial({ color: 0xc6e4c3, transparent: true, opacity: 0.5, side: THREE.DoubleSide })
+    );
     shadowFloor.rotation.x = -Math.PI / 2;
     shadowFloor.position.y = -0.44;
     mascotGroup.add(shadowFloor);
 
-    // 10. 3D Floating Badges Setup (Coins with 3D Depth)
+    // 8. 3D Coding Cosmos Orbiting Badges (Coins with 3D Depth & Metallic Bevel)
     const textureLoader = new THREE.TextureLoader();
     const badgeCoinGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.07, 32);
-    const coinBackMat = new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        metalness: 0.2,
-        roughness: 0.3
-    });
-    const coinRimMatGold = new THREE.MeshStandardMaterial({
-        color: 0xf59e0b,
-        metalness: 0.75,
-        roughness: 0.25
-    });
-    const coinRimMatGreen = new THREE.MeshStandardMaterial({
-        color: 0x6da763,
-        metalness: 0.5,
-        roughness: 0.3
-    });
+    const coinRimMatGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
+    const coinRimMatTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
+    const coinRimMatGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
 
-    floatingIconsData.forEach((data, i) => {
-        const isAward = data.type === 'award';
-        const isContact = data.type === 'contact';
+    codingCosmosBadges.forEach((badge, i) => {
+        const isAward = badge.type === 'award';
+        const isIDE = badge.type === 'ide';
 
-        // Coin group for 3D depth
         const coinGroup = new THREE.Group();
 
-        // Rim cylinder
-        const rimMesh = new THREE.Mesh(badgeCoinGeo, isAward ? coinRimMatGold : coinRimMatGreen);
+        // Metallic Rim
+        const rimMesh = new THREE.Mesh(
+            badgeCoinGeo,
+            isAward ? coinRimMatGold : (isIDE ? coinRimMatTech : coinRimMatGreen)
+        );
         rimMesh.rotation.x = Math.PI / 2;
         coinGroup.add(rimMesh);
 
         // Front texture plane
-        const texture = textureLoader.load(data.logoUrl);
+        const texture = textureLoader.load(badge.logoUrl);
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.generateMipmaps = true;
 
-        const frontGeo = new THREE.CircleGeometry(0.34, 32);
-        const frontMat = new THREE.MeshBasicMaterial({
-            map: texture,
-            transparent: true,
-            side: THREE.FrontSide
-        });
-        const frontMesh = new THREE.Mesh(frontGeo, frontMat);
+        const frontMesh = new THREE.Mesh(
+            new THREE.CircleGeometry(0.34, 32),
+            new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.FrontSide })
+        );
         frontMesh.position.z = 0.04;
         coinGroup.add(frontMesh);
 
-        // Orbit radius: Awards in middle high orbit, contacts inner, skills outer
-        let orbitRadius = isAward ? 2.1 : (isContact ? 1.85 : 2.75);
-        const totalInSet = floatingIconsData.length;
-        const initialTheta = (i / totalInSet) * Math.PI * 2;
-        const y = 0.7 + Math.sin(i * 1.3) * 0.55;
+        const total = codingCosmosBadges.length;
+        const initialTheta = (i / total) * Math.PI * 2;
+        const y = badge.yOffset;
+        const r = badge.radius;
 
         coinGroup.position.set(
-            Math.sin(initialTheta) * orbitRadius,
+            Math.sin(initialTheta) * r,
             y,
-            Math.cos(initialTheta) * orbitRadius
+            Math.cos(initialTheta) * r
         );
 
         coinGroup.userData = {
-            type: 'floating_badge',
-            info: data,
+            type: 'cosmos_badge',
+            info: badge,
+            radius: r,
             initialY: y,
-            radius: orbitRadius,
             theta: initialTheta,
-            orbitSpeed: isAward ? 0.004 : (isContact ? 0.003 : -0.0025),
-            phase: i * 0.8
+            orbitSpeed: badge.orbitSpeed,
+            phase: i * 0.9,
+            inclination: badge.inclination
         };
 
         scene.add(coinGroup);
         floatingMeshes.push(coinGroup);
     });
 
-    // 11. Mini Floating Leaves / Particles
+    // 9. Floating Leaves / Stardust Particles in 3D Space
     createMiniFloatingLeaves();
 
     // Fade out 3D Loader
@@ -552,32 +813,7 @@ function initThreeJSMascot() {
         if (loaderEl) loaderEl.classList.add('fade-out');
     }, 450);
 
-    // 12. 3D Toolbar Controls Setup
-    const toggleRotateBtn = document.getElementById('btn-toggle-rotate');
-    const resetViewBtn = document.getElementById('btn-reset-view');
-
-    if (toggleRotateBtn) {
-        toggleRotateBtn.addEventListener('click', () => {
-            autoRotateActive = !autoRotateActive;
-            toggleRotateBtn.classList.toggle('active', autoRotateActive);
-            playPopSound(580, 0.06);
-        });
-    }
-
-    if (resetViewBtn) {
-        resetViewBtn.addEventListener('click', () => {
-            gsap.to(camera.position, {
-                x: 0, y: 0.6, z: 8.8,
-                duration: 0.8,
-                ease: 'power2.inOut',
-                onUpdate: () => controls.update()
-            });
-            gsap.to(mascotGroup.rotation, { y: 0, duration: 0.8, ease: 'power2.out' });
-            playPopSound(720, 0.08);
-        });
-    }
-
-    // 13. Raycasting Click / Tap Handling
+    // 10. Raycasting Click / Tap Handling
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
@@ -588,24 +824,21 @@ function initThreeJSMascot() {
 
         raycaster.setFromCamera(mouse, camera);
 
-        // Find intersections in floating badge children & mascot
         const checkObjects = [];
-        floatingMeshes.forEach(fg => {
-            fg.children.forEach(c => checkObjects.push(c));
-        });
-        checkObjects.push(headMesh, bodyMesh, stripeMesh);
+        floatingMeshes.forEach(fg => fg.children.forEach(c => checkObjects.push(c)));
+        checkObjects.push(headMesh, bodyMesh);
 
         const intersects = raycaster.intersectObjects(checkObjects);
 
         if (intersects.length > 0) {
             const hit = intersects[0].object;
-            const parentCoin = hit.parent && hit.parent.userData && hit.parent.userData.type === 'floating_badge' ? hit.parent : null;
+            const parentCoin = hit.parent && hit.parent.userData && hit.parent.userData.type === 'cosmos_badge' ? hit.parent : null;
 
             if (parentCoin) {
                 const info = parentCoin.userData.info;
                 playPopSound(800, 0.1);
 
-                // Spin animation
+                // Spin badge
                 gsap.to(parentCoin.rotation, {
                     y: parentCoin.rotation.y + Math.PI * 2,
                     duration: 0.65,
@@ -616,23 +849,20 @@ function initThreeJSMascot() {
                     duration: 0.2, yoyo: true, repeat: 1
                 });
 
-                if (info.type === 'contact') {
-                    setSpeechBubble(`Đang mở ${info.name} của Quang... 🚀`);
-                    setTimeout(() => window.open(info.url, '_blank'), 450);
-                } else {
-                    setSpeechBubble(info.info);
-                    // Mascot celebrates
-                    gsap.to(mascotGroup.position, {
-                        y: -0.3, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out'
-                    });
+                // Cat joyful reaction & speech
+                setSpeechBubble(info.catSpeech);
+                gsap.to(mascotGroup.position, {
+                    y: -0.3, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out'
+                });
+                if (headGroup) {
                     gsap.to(headGroup.rotation, {
                         z: 0.22, duration: 0.18, yoyo: true, repeat: 1
                     });
                 }
             } else {
-                // Clicked Mascot
-                playPopSound(450, 0.1);
-                setSpeechBubble('Hihi! Bạn vừa cù lét gấu Matcha đó hả? 🐻🍵 Nhấn vào các huy hiệu bay quanh để xem thành tích nhé!');
+                // Clicked Tabby Cat itself!
+                playPopSound(500, 0.1);
+                setSpeechBubble('Meo meo! Bạn vừa nựng má chú mèo mướp nè! 🐾 Chạm các biểu tượng lập trình bay quanh để xem vũ trụ công nghệ của Quang nha!');
                 gsap.to(mascotGroup.position, {
                     y: -0.35, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out'
                 });
@@ -649,7 +879,7 @@ function initThreeJSMascot() {
         handleInteractionClick(e.clientX, e.clientY);
     });
 
-    // Touch tap for mobile
+    // Touch tap handling for mobile
     let touchStartX = 0, touchStartY = 0;
     container.addEventListener('touchstart', (e) => {
         if (e.touches.length === 1) {
@@ -662,23 +892,13 @@ function initThreeJSMascot() {
         if (e.changedTouches.length === 1) {
             const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
             const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
-            // If it was a tap (not a drag)
             if (dx < 10 && dy < 10) {
                 handleInteractionClick(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
             }
         }
     }, { passive: true });
 
-    function setSpeechBubble(text) {
-        const speechEl = document.getElementById('speech-text');
-        const speechBox = document.getElementById('mascot-speech-box');
-        if (speechEl) speechEl.textContent = text;
-        if (speechBox) {
-            gsap.fromTo(speechBox, { scale: 0.92 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' });
-        }
-    }
-
-    // 14. Mouse Head Tracking & Hover Detection
+    // 11. Mouse Head Tracking & Hover Detection
     let hoveredCoin = null;
     window.addEventListener('mousemove', (event) => {
         const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -687,7 +907,6 @@ function initThreeJSMascot() {
         targetHeadRotY = mouseX * 0.42;
         targetHeadRotX = mouseY * 0.24;
 
-        // Hover raycast
         const rect = renderer.domElement.getBoundingClientRect();
         if (event.clientX >= rect.left && event.clientX <= rect.right &&
             event.clientY >= rect.top && event.clientY <= rect.bottom) {
@@ -717,11 +936,10 @@ function initThreeJSMascot() {
         }
     });
 
-    // 15. Smartphone Gyroscope Tilt Integration (DeviceOrientation)
+    // 12. Smartphone Gyroscope Tilt Integration
     if (window.DeviceOrientationEvent && isMobile) {
         window.addEventListener('deviceorientation', (e) => {
             if (e.gamma !== null && e.beta !== null) {
-                // Tilt gamma [-90, 90], beta [-180, 180]
                 const clampGamma = Math.max(-45, Math.min(45, e.gamma));
                 const clampBeta = Math.max(0, Math.min(90, e.beta));
                 targetHeadRotY = (clampGamma / 45) * 0.45;
@@ -730,7 +948,7 @@ function initThreeJSMascot() {
         }, { passive: true });
     }
 
-    // 16. Auto Blink Cycle
+    // 13. Auto Blink Cycle
     function triggerBlink() {
         if (isBlinking || !eyeLeft || !eyeRight) return;
         isBlinking = true;
@@ -747,15 +965,21 @@ function initThreeJSMascot() {
     }
     setTimeout(triggerBlink, 2200);
 
-    // 17. Animation Render Loop
+    // 14. Animation Render Loop
     function animate() {
         requestAnimationFrame(animate);
 
         const time = Date.now() * 0.002;
 
-        // Mascot Gentle Breathing
-        mascotGroup.position.y = -0.78 + Math.sin(time) * 0.05;
-        if (heldCupGroup) heldCupGroup.position.y = 0.58 + Math.cos(time * 1.4) * 0.035;
+        // Cat Gentle Breathing & Latte Cup floating
+        mascotGroup.position.y = -0.75 + Math.sin(time) * 0.045;
+        if (heldCupGroup) heldCupGroup.position.y = 0.58 + Math.cos(time * 1.4) * 0.03;
+
+        // Tail swishing animation
+        if (tailGroup) {
+            tailGroup.rotation.y = Math.sin(time * 2.2) * 0.32;
+            tailGroup.rotation.z = Math.cos(time * 1.8) * 0.15;
+        }
 
         // Head tracking Lerp
         if (headGroup) {
@@ -763,26 +987,25 @@ function initThreeJSMascot() {
             headGroup.rotation.x += (targetHeadRotX - headGroup.rotation.x) * 0.08;
         }
 
-        // Orbit Rings Rotation
+        // Holographic Gyro Rings
         if (orbitRingGroup) {
             orbitRingGroup.rotation.y += 0.008;
         }
 
         // Auto rotate entire group slightly if enabled
         if (autoRotateActive) {
-            mascotGroup.rotation.y = Math.sin(time * 0.4) * 0.22;
+            mascotGroup.rotation.y = Math.sin(time * 0.4) * 0.2;
         }
 
-        // Update floating badges (orbiting & camera billboarding)
+        // Orbiting Cosmic Badges
         floatingMeshes.forEach(coin => {
             const ud = coin.userData;
             ud.theta += ud.orbitSpeed;
 
             coin.position.x = Math.sin(ud.theta) * ud.radius;
             coin.position.z = Math.cos(ud.theta) * ud.radius;
-            coin.position.y = ud.initialY + Math.sin(time * 0.9 + ud.phase) * 0.1;
+            coin.position.y = ud.initialY + Math.sin(time * 0.9 + ud.phase) * 0.12 + Math.sin(ud.theta) * ud.inclination;
 
-            // Make front face camera
             coin.lookAt(camera.position);
         });
 
@@ -791,33 +1014,41 @@ function initThreeJSMascot() {
     }
     animate();
 
-    // 18. Responsive Window Resize
+    // 15. Responsive Window Resize
     window.addEventListener('resize', () => {
         const w = container.clientWidth;
-        const h = container.clientHeight || 440;
+        const h = container.clientHeight || 480;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
     });
 }
 
+function setSpeechBubble(text) {
+    const speechEl = document.getElementById('speech-text');
+    const speechBox = document.getElementById('mascot-speech-box');
+    if (speechEl) speechEl.textContent = text;
+    if (speechBox && typeof gsap !== 'undefined') {
+        gsap.fromTo(speechBox, { scale: 0.92 }, { scale: 1, duration: 0.35, ease: 'back.out(2)' });
+    }
+}
+
 // Floating leaves background particles
 function createMiniFloatingLeaves() {
-    const count = 40;
+    const count = 45;
     const leafGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const speeds = [];
 
     for (let i = 0; i < count * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 6.5;
-        positions[i + 1] = Math.random() * 5.5 - 2.5;
-        positions[i + 2] = (Math.random() - 0.5) * 5.5;
-        speeds.push(0.008 + Math.random() * 0.014);
+        positions[i] = (Math.random() - 0.5) * 7.0;
+        positions[i + 1] = Math.random() * 6.0 - 3.0;
+        positions[i + 2] = (Math.random() - 0.5) * 6.0;
+        speeds.push(0.008 + Math.random() * 0.015);
     }
 
     leafGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    // Crisp round leaf texture
     const canvas = document.createElement('canvas');
     canvas.width = 32;
     canvas.height = 32;
@@ -832,7 +1063,7 @@ function createMiniFloatingLeaves() {
         size: 0.18,
         map: leafTexture,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.65,
         depthWrite: false
     });
 
@@ -846,12 +1077,70 @@ function createMiniFloatingLeaves() {
         for (let i = 1; i < count * 3; i += 3) {
             pos[i] += speeds[speedIdx];
             pos[i - 1] += Math.sin(Date.now() * 0.001 + speedIdx) * 0.004;
-            if (pos[i] > 3.2) pos[i] = -2.6;
+            if (pos[i] > 3.5) pos[i] = -2.8;
             speedIdx++;
         }
         leafGeo.attributes.position.needsUpdate = true;
         if (prevRender) prevRender();
     };
+}
+
+// --- Achievement Cards Hover & Click Reactions ---
+function initAchievementReactions() {
+    const trophyCards = document.querySelectorAll('.trophy-bento-card');
+    const certCards = document.querySelectorAll('.cert-card');
+
+    const triggerReaction = (title, speech) => {
+        if (!mascotGroup) return;
+        playPopSound(720, 0.08);
+
+        gsap.to(mascotGroup.position, {
+            y: mascotGroup.position.y + 0.35,
+            duration: 0.22,
+            yoyo: true,
+            repeat: 1,
+            ease: 'power2.out'
+        });
+        if (headGroup) {
+            gsap.to(headGroup.rotation, {
+                z: 0.2,
+                duration: 0.2,
+                yoyo: true,
+                repeat: 1
+            });
+        }
+        setSpeechBubble(speech);
+    };
+
+    trophyCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const title = card.querySelector('.bento-title')?.textContent || '';
+            let quote = `Meo! Thành tích "${title}" xịn sò quá sen ơi! 🐾`;
+            if (title.includes('AI Riser')) quote = 'Meo! Top 500 AI Riser Vietnam 2026 của Google nè! Đỉnh nóc kịch trần luôn! 🏆🐾';
+            else if (title.includes('Vibe Coding')) quote = 'Meo! Chứng nhận 5-Day Vibe Coding Kaggle & Google siêu cháy! ⚡🐾';
+            else if (title.includes('STEM')) quote = 'Meo! Giải Nhất KHKT & Ngày hội STEM cấp trường 2026! 🥇🐾';
+            else if (title.includes('Thành Phố') || title.includes('TP')) quote = 'Meo! Giải Ba KHKT cấp Thành Phố Đà Nẵng 2026! Đáng tự hào! 🥉🐾';
+            triggerReaction(title, quote);
+        });
+    });
+
+    certCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const title = card.querySelector('.cert-title')?.textContent || '';
+            triggerReaction(title, `Meo! "${title}" - Cột mốc sáng giá của Quang đó! 🌟🐾`);
+        });
+    });
+
+    // Scroll parallax dynamic tilt on cat
+    let lastScrollY = window.scrollY;
+    window.addEventListener('scroll', () => {
+        const scrollDelta = window.scrollY - lastScrollY;
+        lastScrollY = window.scrollY;
+        if (mascotGroup) {
+            mascotGroup.rotation.x = Math.max(-0.25, Math.min(0.25, scrollDelta * 0.005));
+            gsap.to(mascotGroup.rotation, { x: 0, duration: 0.4 });
+        }
+    }, { passive: true });
 }
 
 // --- 2. Certificates & Achievements Gallery & Modal ---
@@ -1308,7 +1597,7 @@ function initGSAPAnimations() {
         ease: 'power2.out'
     });
 
-    gsap.from('.mascot-box', {
+    gsap.from('.mascot-universe-stage', {
         scale: 0.9,
         opacity: 0,
         delay: 0.3,
