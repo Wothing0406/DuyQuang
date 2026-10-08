@@ -306,7 +306,7 @@ export default function ProfilePage() {
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 0.6, 8.8);
+    camera.position.set(0, 0.45, isMobile ? 9.8 : 8.8);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2));
@@ -568,20 +568,24 @@ export default function ProfilePage() {
     ring2.rotation.x = Math.PI / 1.8;
     orbitRingGroup.add(ring2);
 
-    // Orbiting 3D Badges
+    // Orbiting 3D Badges (Halo orbit - Never overlaps cat face!)
     const textureLoader = new THREE.TextureLoader();
-    const badgeCoinGeo = new THREE.CylinderGeometry(0.36, 0.36, 0.07, 32);
+    const coinR = isMobile ? 0.28 : 0.32;
+    const badgeCoinGeo = new THREE.CylinderGeometry(coinR, coinR, 0.06, 32);
     const rimGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
     const rimTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
     const rimGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
 
+    const rx = isMobile ? 3.3 : 3.7;
+    const rz = isMobile ? 2.1 : 2.4;
+
     const cosmosBadges = [
-      { name: "Top 500 AI Riser VN", logo: "https://img.icons8.com/color/96/google-logo.png", r: 2.2, speed: 0.0035, isAward: true, y: 0.8, speech: "Meo! Top 500 AI Riser Vietnam của Google nè! 🏆🐾" },
-      { name: "5-Day Vibe Coding", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg", r: 2.1, speed: -0.0032, isAward: true, y: 0.4, speech: "Meo! Khóa Vibe Coding AI Agents Kaggle & Google siêu đỉnh! ⚡🐾" },
-      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", r: 2.9, speed: 0.0028, isIDE: true, y: 0.95, speech: "Meo! VS Code là IDE ruột của Quang để build AI & Web! 💻🐾" },
-      { name: "Python", logo: "https://img.icons8.com/color/96/python.png", r: 2.7, speed: -0.0025, y: 0.2, speech: "Meo! Python dùng huấn luyện Deep Learning & AI Agents! 🐍🐾" },
-      { name: "React", logo: "https://img.icons8.com/color/96/react-native.png", r: 3.1, speed: 0.003, isIDE: true, y: -0.2, speech: "Meo! React và Three.js tạo nên trải nghiệm 3D mượt mà! ⚛️🐾" },
-      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", r: 2.5, speed: -0.0028, y: -0.4, speech: "Meo! TypeScript code an toàn kiểu dữ liệu, không lo bug! 🛡️🐾" },
+      { name: "Top 500 AI Riser VN", logo: "https://img.icons8.com/color/96/google-logo.png", speed: 0.0028, isAward: true, speech: "Meo! Top 500 AI Riser Vietnam của Google nè! 🏆🐾" },
+      { name: "5-Day Vibe Coding", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg", speed: -0.0025, isAward: true, speech: "Meo! Khóa Vibe Coding AI Agents Kaggle & Google siêu đỉnh! ⚡🐾" },
+      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", speed: 0.0024, isIDE: true, speech: "Meo! VS Code là IDE ruột của Quang để build AI & Web! 💻🐾" },
+      { name: "Python", logo: "https://img.icons8.com/color/96/python.png", speed: -0.0022, speech: "Meo! Python dùng huấn luyện Deep Learning & AI Agents! 🐍🐾" },
+      { name: "React", logo: "https://img.icons8.com/color/96/react-native.png", speed: 0.0026, isIDE: true, speech: "Meo! React và Three.js tạo nên trải nghiệm 3D mượt mà! ⚛️🐾" },
+      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", speed: -0.0023, speech: "Meo! TypeScript code an toàn kiểu dữ liệu, không lo bug! 🛡️🐾" },
     ];
 
     const badgeMeshes: any[] = [];
@@ -593,15 +597,19 @@ export default function ProfilePage() {
 
       const texture = textureLoader.load(b.logo);
       const front = new THREE.Mesh(
-        new THREE.CircleGeometry(0.32, 32),
+        new THREE.CircleGeometry(coinR * 0.9, 32),
         new THREE.MeshBasicMaterial({ map: texture, transparent: true })
       );
-      front.position.z = 0.04;
+      front.position.z = 0.035;
       coin.add(front);
 
       const theta = (idx / cosmosBadges.length) * Math.PI * 2;
-      coin.position.set(Math.sin(theta) * b.r, b.y, Math.cos(theta) * b.r);
-      (coin as any).userData = { ...b, theta };
+      coin.position.set(
+        Math.sin(theta) * rx,
+        -0.2 - Math.cos(theta) * 0.65,
+        Math.cos(theta) * rz
+      );
+      (coin as any).userData = { ...b, theta, rx, rz };
       scene.add(coin);
       badgeMeshes.push(coin);
     });
@@ -636,9 +644,9 @@ export default function ProfilePage() {
       badgeMeshes.forEach((coin) => {
         const ud = coin.userData;
         ud.theta += ud.speed;
-        coin.position.x = Math.sin(ud.theta) * ud.r;
-        coin.position.z = Math.cos(ud.theta) * ud.r;
-        coin.position.y = ud.y + Math.sin(time * 0.9 + ud.theta) * 0.1;
+        coin.position.x = Math.sin(ud.theta) * ud.rx;
+        coin.position.z = Math.cos(ud.theta) * ud.rz;
+        coin.position.y = -0.2 - Math.cos(ud.theta) * 0.65 + Math.sin(time * 1.1 + ud.theta) * 0.06;
         coin.lookAt(camera.position);
       });
 
@@ -819,6 +827,69 @@ export default function ProfilePage() {
               <strong>React & 3D Web</strong>, kiến trúc <strong>Backend API</strong> và tối ưu hóa <strong>SQL</strong>.
             </p>
 
+            {/* Direct Contact & Social Connect Bar (Right below bio summary!) */}
+            <div className="flex flex-wrap items-center gap-3 pt-1" id="contact">
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsContactModalOpen(true);
+                    playInteractionSound(640);
+                  }}
+                  className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs md:text-sm inline-flex items-center justify-center gap-2 shadow-xs active:scale-95 transition-all cursor-pointer"
+                  title="Gửi Email qua Gmail"
+                >
+                  <Mail className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>Gửi Email</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsContactModalOpen(true);
+                    playInteractionSound(640);
+                  }}
+                  className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs md:text-sm inline-flex items-center justify-center gap-2 shadow-xs active:scale-95 transition-all cursor-pointer"
+                  title="Hotline & Zalo: 0795 277 227"
+                >
+                  <Phone className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>0795 277 227</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://github.com/Wothing0406"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-800 hover:border-slate-800 hover:bg-slate-50 active:scale-95 transition-all shadow-xs"
+                  title="GitHub"
+                  aria-label="GitHub"
+                >
+                  <Github className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                </a>
+                <a
+                  href="https://www.facebook.com/NgDoQ"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-blue-200 text-blue-600 hover:border-blue-600 hover:bg-blue-50 active:scale-95 transition-all shadow-xs"
+                  title="Facebook"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                </a>
+                <a
+                  href="https://www.instagram.com/quangcogo0406/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-pink-200 text-pink-600 hover:border-pink-600 hover:bg-pink-50 active:scale-95 transition-all shadow-xs"
+                  title="Instagram"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                </a>
+              </div>
+            </div>
+
             {/* Bento Highlights Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
               <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-blue-50/80 border border-blue-200/60 shadow-xs hover:border-blue-400 transition-all">
@@ -868,64 +939,6 @@ export default function ProfilePage() {
                   <h4 className="text-sm font-bold text-emerald-950">Giải Ba Đà Nẵng 2026</h4>
                 </div>
               </div>
-            </div>
-
-            {/* Social Connection Row - Mobile 44px Touch Targets */}
-            <div className="flex items-center gap-2.5 flex-wrap pt-2" id="contact">
-              <a
-                href="https://github.com/Wothing0406"
-                target="_blank"
-                rel="noreferrer"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-800 hover:border-slate-800 hover:bg-slate-50 active:scale-95 transition-all shadow-xs"
-                title="GitHub"
-                aria-label="GitHub"
-              >
-                <Github className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </a>
-              <a
-                href="https://www.facebook.com/NgDoQ"
-                target="_blank"
-                rel="noreferrer"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-blue-200 text-blue-600 hover:border-blue-600 hover:bg-blue-50 active:scale-95 transition-all shadow-xs"
-                title="Facebook"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </a>
-              <a
-                href="https://www.instagram.com/quangcogo0406/"
-                target="_blank"
-                rel="noreferrer"
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-pink-200 text-pink-600 hover:border-pink-600 hover:bg-pink-50 active:scale-95 transition-all shadow-xs"
-                title="Instagram"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </a>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsContactModalOpen(true);
-                  playInteractionSound(640);
-                }}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-amber-200 text-amber-600 hover:border-amber-600 hover:bg-amber-50 active:scale-95 transition-all shadow-xs cursor-pointer"
-                title="Liên hệ Gmail / Zalo / SĐT"
-                aria-label="Gmail"
-              >
-                <Mail className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsContactModalOpen(true);
-                  playInteractionSound(640);
-                }}
-                className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-emerald-200 text-emerald-700 hover:border-emerald-600 hover:bg-emerald-50 active:scale-95 transition-all shadow-xs cursor-pointer"
-                title="Hotline & Zalo: 0795 277 227"
-                aria-label="Điện thoại"
-              >
-                <Phone className="w-5 h-5 shrink-0" strokeWidth={1.75} />
-              </button>
             </div>
 
             {/* Core Skills Dashboard */}

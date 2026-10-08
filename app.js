@@ -336,7 +336,7 @@ function initThreeJSMascot() {
 
     // 2. Camera
     camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
-    camera.position.set(0, 0.5, 8.6);
+    camera.position.set(0, 0.45, isMobile ? 9.8 : 8.6);
 
     // 3. WebGL Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
@@ -748,10 +748,14 @@ function initThreeJSMascot() {
 
     // 8. 3D Coding Cosmos Orbiting Badges (Coins with 3D Depth & Metallic Bevel)
     const textureLoader = new THREE.TextureLoader();
-    const badgeCoinGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.07, 32);
+    const coinR = isMobile ? 0.30 : 0.34;
+    const badgeCoinGeo = new THREE.CylinderGeometry(coinR, coinR, 0.06, 32);
     const coinRimMatGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
     const coinRimMatTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
     const coinRimMatGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
+
+    const orbitRadiusX = isMobile ? 3.3 : 3.8;
+    const orbitRadiusZ = isMobile ? 2.1 : 2.5;
 
     codingCosmosBadges.forEach((badge, i) => {
         const isAward = badge.type === 'award';
@@ -773,32 +777,29 @@ function initThreeJSMascot() {
         texture.generateMipmaps = true;
 
         const frontMesh = new THREE.Mesh(
-            new THREE.CircleGeometry(0.34, 32),
+            new THREE.CircleGeometry(coinR * 0.9, 32),
             new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.FrontSide })
         );
-        frontMesh.position.z = 0.04;
+        frontMesh.position.z = 0.035;
         coinGroup.add(frontMesh);
 
         const total = codingCosmosBadges.length;
         const initialTheta = (i / total) * Math.PI * 2;
-        const y = badge.yOffset;
-        const r = badge.radius;
 
         coinGroup.position.set(
-            Math.sin(initialTheta) * r,
-            y,
-            Math.cos(initialTheta) * r
+            Math.sin(initialTheta) * orbitRadiusX,
+            -0.2 - Math.cos(initialTheta) * 0.65,
+            Math.cos(initialTheta) * orbitRadiusZ
         );
 
         coinGroup.userData = {
             type: 'cosmos_badge',
             info: badge,
-            radius: r,
-            initialY: y,
+            radiusX: orbitRadiusX,
+            radiusZ: orbitRadiusZ,
             theta: initialTheta,
-            orbitSpeed: badge.orbitSpeed,
-            phase: i * 0.9,
-            inclination: badge.inclination
+            orbitSpeed: badge.orbitSpeed * 0.8,
+            phase: i * 0.9
         };
 
         scene.add(coinGroup);
@@ -997,14 +998,15 @@ function initThreeJSMascot() {
             mascotGroup.rotation.y = Math.sin(time * 0.4) * 0.2;
         }
 
-        // Orbiting Cosmic Badges
+        // Orbiting Cosmic Badges (Planetary Halo Ring - Never covers cat face!)
         floatingMeshes.forEach(coin => {
             const ud = coin.userData;
             ud.theta += ud.orbitSpeed;
 
-            coin.position.x = Math.sin(ud.theta) * ud.radius;
-            coin.position.z = Math.cos(ud.theta) * ud.radius;
-            coin.position.y = ud.initialY + Math.sin(time * 0.9 + ud.phase) * 0.12 + Math.sin(ud.theta) * ud.inclination;
+            coin.position.x = Math.sin(ud.theta) * ud.radiusX;
+            coin.position.z = Math.cos(ud.theta) * ud.radiusZ;
+            // Tilted halo orbit: dips below paws in front, rises behind head in back
+            coin.position.y = -0.2 - Math.cos(ud.theta) * 0.65 + Math.sin(time * 1.1 + ud.phase) * 0.06;
 
             coin.lookAt(camera.position);
         });
@@ -1016,9 +1018,12 @@ function initThreeJSMascot() {
 
     // 15. Responsive Window Resize
     window.addEventListener('resize', () => {
+        if (!container || !renderer || !camera) return;
         const w = container.clientWidth;
         const h = container.clientHeight || 480;
+        const mobileNow = window.innerWidth < 768;
         camera.aspect = w / h;
+        camera.position.z = mobileNow ? 9.8 : 8.6;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
     });

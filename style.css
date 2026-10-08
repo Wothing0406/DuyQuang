@@ -282,18 +282,23 @@ section {
 .logo {
     font-family: var(--font-heading);
     font-weight: 800;
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     color: var(--matcha-dark);
     display: flex;
     align-items: center;
     gap: 8px;
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .logo-accent {
-    font-size: 1.5rem;
-    display: inline-block;
+    font-size: 1.35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: transform 0.3s ease;
+    flex-shrink: 0;
 }
 
 .logo:hover .logo-accent {
@@ -311,6 +316,14 @@ section {
     color: #1e3a8a;
     font-weight: 700;
     box-shadow: 0 2px 8px rgba(66, 133, 244, 0.1);
+    white-space: nowrap;
+}
+
+.badge-text-mobile {
+    display: none;
+}
+.badge-text-desktop {
+    display: inline;
 }
 
 .pulse-dot {
@@ -542,21 +555,77 @@ section {
     line-height: 1.25;
 }
 
-/* Contact Circle Row */
-.contact-row-cute {
+/* Hero Contact Bar (Direct Actions Right Below Bio) */
+.hero-contact-bar {
     display: flex;
-    gap: 12px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
     align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
 }
 
+.contact-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-cta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    min-height: 44px;
+    border-radius: 24px;
+    font-family: var(--font-heading);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-bouncy);
+    border: 1.5px solid transparent;
+    box-shadow: 0 4px 14px rgba(80, 115, 75, 0.08);
+}
+
+.contact-cta-pill img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.cta-mail {
+    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    color: #92400e;
+    border-color: rgba(245, 158, 11, 0.35);
+}
+.cta-mail:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.22);
+}
+
+.cta-phone {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    color: #065f46;
+    border-color: rgba(16, 185, 129, 0.35);
+}
+.cta-phone:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.22);
+}
+
+.contact-social-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Contact Circle Buttons */
 .contact-circle-btn {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: var(--matcha-cream);
-    border: 2px solid rgba(109, 167, 99, 0.25);
+    border: 1.5px solid rgba(109, 167, 99, 0.28);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -565,17 +634,18 @@ section {
     transition: var(--transition-bouncy);
     overflow: hidden;
     position: relative;
+    cursor: pointer;
 }
 
 .contact-circle-btn img {
-    width: 60%;
-    height: 60%;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
     transition: var(--transition-smooth);
 }
 
 .contact-circle-btn:hover {
-    transform: translateY(-5px) scale(1.12);
+    transform: translateY(-4px) scale(1.1);
     border-color: var(--matcha-primary);
     box-shadow: 0 8px 22px rgba(109, 167, 99, 0.28);
 }
@@ -1857,20 +1927,61 @@ section {
 
 @media (max-width: 1024px) {
     .hero-container {
-        grid-template-columns: 1fr;
-        gap: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .hero-text-side {
+        display: contents; /* Children participate in flex ordering of .hero-container */
+    }
+    
+    .hero-pill-badge {
+        order: 1;
+        margin-bottom: 6px;
+        align-self: flex-start;
+    }
+    
+    .hero-title-group {
+        order: 2;
+        margin-bottom: 6px;
+    }
+    
+    .hero-subtitle {
+        order: 3;
+        margin-bottom: 16px;
+    }
+    
+    .hero-contact-bar {
+        order: 4;
+        margin-bottom: 18px;
     }
     
     .hero-mascot-side {
-        order: -1;
+        order: 5;
+        margin: 6px 0 20px 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .trophy-bento-grid {
+        order: 6;
+        margin-bottom: 22px;
+    }
+    
+    .skills-dashboard-cute {
+        order: 7;
     }
     
     .mascot-universe-stage {
-        max-width: 440px;
+        max-width: 100%;
+        width: 100%;
     }
     
     #mascot-canvas-container {
-        height: 380px;
+        height: 330px;
+        max-height: 48vh;
     }
     
     .game-box {
@@ -1882,62 +1993,128 @@ section {
 
 @media (max-width: 768px) {
     .navbar {
-        padding: 0 4%;
-        height: 64px;
+        padding: 0 12px;
+        height: 60px;
     }
     
     .nav-links {
         display: none; /* Replaced by bottom dock on mobile */
     }
     
+    .logo {
+        font-size: 1.05rem;
+        gap: 6px;
+    }
+    
     .status-badge {
-        font-size: 0.75rem;
-        padding: 5px 10px;
+        font-size: 0.72rem;
+        padding: 4px 10px;
+    }
+    
+    .badge-text-desktop {
+        display: none;
+    }
+    
+    .badge-text-mobile {
+        display: inline;
     }
     
     .hero-section {
-        padding-top: 85px;
+        padding-top: 76px;
+        min-height: auto;
     }
     
     .hero-title {
-        font-size: 2.6rem;
+        font-size: clamp(2rem, 7.5vw, 2.6rem);
+        line-height: 1.1;
     }
     
     .hero-nickname {
-        font-size: 1.05rem;
+        font-size: 1rem;
+        margin-bottom: 10px;
     }
     
-    .trophy-bento-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
+    .hero-subtitle {
+        font-size: 0.94rem;
+        line-height: 1.6;
     }
     
-    .contact-row-cute {
+    .hero-contact-bar {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+    }
+    
+    .contact-cta-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .contact-cta-pill {
         justify-content: center;
-        gap: 14px;
+        padding: 10px 8px;
+        font-size: 0.82rem;
+        min-height: 44px;
+    }
+    
+    .contact-social-group {
+        justify-content: center;
+        gap: 12px;
     }
     
     .contact-circle-btn {
-        width: 46px;
-        height: 46px;
+        width: 44px;
+        height: 44px;
     }
     
     #mascot-canvas-container {
-        height: 340px;
+        height: 310px;
+    }
+    
+    .mascot-bubble {
+        font-size: 0.8rem;
+        padding: 10px 14px;
+    }
+    
+    .trophy-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .trophy-bento-card {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+    
+    .bento-icon {
+        font-size: 1.35rem;
+    }
+    
+    .bento-title {
+        font-size: 0.84rem;
+        line-height: 1.2;
+    }
+    
+    .bento-sub {
+        font-size: 0.62rem;
     }
     
     .certs-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 18px;
     }
     
     .modal-body {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 16px;
     }
     
     .modal-content {
-        padding: 20px;
+        padding: 18px;
     }
     
     .ingredients-list-cute {
@@ -1955,22 +2132,33 @@ section {
 }
 
 @media (max-width: 480px) {
+    .navbar {
+        padding: 0 10px;
+    }
+    
+    .logo {
+        font-size: 0.95rem;
+    }
+    
     .hero-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
     }
     
     .hero-pill-badge {
-        font-size: 0.72rem;
-        padding: 6px 12px;
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+    
+    .contact-cta-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .trophy-bento-grid {
+        grid-template-columns: 1fr;
     }
     
     #mascot-canvas-container {
-        height: 300px;
-    }
-    
-    .mascot-speech-bubble {
-        font-size: 0.78rem;
-        padding: 8px 12px;
+        height: 290px;
     }
     
     .cup-container-cute {

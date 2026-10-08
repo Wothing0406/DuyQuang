@@ -41,7 +41,7 @@
     />
 
     <!-- CSS Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=2.2" />
   </head>
 
   <body>
@@ -58,13 +58,14 @@
     <header class="navbar" id="top-navbar">
       <div class="logo">
         <span class="logo-accent">
-          <svg class="icon-inline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+          <svg class="icon-inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
         </span>
         <span class="logo-name">QUANG CÓ GỜ</span>
       </div>
       <div class="status-badge" title="Chứng nhận từ Google for Developers">
         <span class="pulse-dot"></span>
-        <span class="status-text">Top 500 AI Riser VN • Google</span>
+        <span class="status-text badge-text-desktop">Top 500 AI Riser VN • Google</span>
+        <span class="status-text badge-text-mobile">Top 500 AI Riser</span>
       </div>
       <nav class="nav-links" aria-label="Desktop Navigation">
         <a href="#hero" class="nav-item active">Giới thiệu</a>
@@ -105,11 +106,14 @@
               >
             </div>
 
-            <h1 class="hero-title">NGUYỄN DUY QUANG</h1>
-            <p class="hero-nickname">
-              Biệt danh thân mật:
-              <span class="cute-highlight">Quang có Gờ</span>
-            </p>
+            <div class="hero-title-group">
+              <h1 class="hero-title">NGUYỄN DUY QUANG</h1>
+              <p class="hero-nickname">
+                Biệt danh thân mật:
+                <span class="cute-highlight">Quang có Gờ</span>
+              </p>
+            </div>
+
             <p class="hero-subtitle">
               Học sinh THPT tại Đà Nẵng chuyên nghiên cứu
               <strong>Training AI / Deep Learning</strong>, lập trình
@@ -117,6 +121,84 @@
               <strong>Backend API</strong> và tối ưu hóa
               <strong>SQL Database</strong>.
             </p>
+
+            <!-- Direct Contact & Social Action Bar (Right below bio!) -->
+            <div class="hero-contact-bar" id="contact">
+              <div class="contact-cta-group">
+                <button
+                  type="button"
+                  id="btn-contact-email"
+                  class="contact-cta-pill cta-mail"
+                  title="Gửi Email qua Gmail"
+                  aria-label="Gửi Gmail"
+                >
+                  <img
+                    src="https://img.icons8.com/color/48/gmail-new.png"
+                    alt="Gmail"
+                    width="20"
+                    height="20"
+                  />
+                  <span>Gửi Email</span>
+                </button>
+                <button
+                  type="button"
+                  id="btn-contact-phone"
+                  class="contact-cta-pill cta-phone"
+                  title="Hotline & Zalo: 0795 277 227"
+                  aria-label="Hotline & Zalo"
+                >
+                  <img
+                    src="https://img.icons8.com/color/48/phone.png"
+                    alt="Phone"
+                    width="20"
+                    height="20"
+                  />
+                  <span>0795 277 227</span>
+                </button>
+              </div>
+
+              <div class="contact-social-group">
+                <a
+                  href="https://github.com/Wothing0406"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-circle-btn card-gh"
+                  title="GitHub Wothing0406"
+                  aria-label="GitHub"
+                >
+                  <img
+                    src="https://img.icons8.com/color/48/github.png"
+                    alt="GitHub"
+                  />
+                </a>
+                <a
+                  href="https://www.facebook.com/nguyenduyquang.dev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-circle-btn card-fb"
+                  title="Facebook Nguyễn Duy Quang"
+                  aria-label="Facebook"
+                >
+                  <img
+                    src="https://img.icons8.com/color/48/facebook-new.png"
+                    alt="Facebook"
+                  />
+                </a>
+                <a
+                  href="https://www.instagram.com/quangcogo0406/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contact-circle-btn card-ig"
+                  title="Instagram quangcogo0406"
+                  aria-label="Instagram"
+                >
+                  <img
+                    src="https://img.icons8.com/color/48/instagram-new.png"
+                    alt="Instagram"
+                  />
+                </a>
+              </div>
+            </div>
 
             <!-- Bento Trophy Highlights Grid -->
             <div class="trophy-bento-grid">
@@ -156,73 +238,6 @@
                   <h4 class="bento-title">Giải Ba Cấp TP 2026</h4>
                 </div>
               </div>
-            </div>
-
-            <!-- Compact Social Contact Circles -->
-            <div class="contact-row-cute" id="contact">
-              <a
-                href="https://www.facebook.com/nguyenduyquang.dev"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-circle-btn card-fb"
-                title="Facebook Nguyễn Duy Quang"
-                aria-label="Facebook"
-              >
-                <img
-                  src="https://img.icons8.com/color/48/facebook-new.png"
-                  alt="Facebook"
-                />
-              </a>
-              <a
-                href="https://www.instagram.com/quangcogo0406/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-circle-btn card-ig"
-                title="Instagram quangcogo0406"
-                aria-label="Instagram"
-              >
-                <img
-                  src="https://img.icons8.com/color/48/instagram-new.png"
-                  alt="Instagram"
-                />
-              </a>
-              <a
-                href="https://github.com/Wothing0406"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="contact-circle-btn card-gh"
-                title="GitHub Wothing0406"
-                aria-label="GitHub"
-              >
-                <img
-                  src="https://img.icons8.com/color/48/github.png"
-                  alt="GitHub"
-                />
-              </a>
-              <button
-                type="button"
-                id="btn-contact-email"
-                class="contact-circle-btn card-mail"
-                title="Gmail & Liên hệ Email"
-                aria-label="Gmail"
-              >
-                <img
-                  src="https://img.icons8.com/color/48/gmail-new.png"
-                  alt="Gmail"
-                />
-              </button>
-              <button
-                type="button"
-                id="btn-contact-phone"
-                class="contact-circle-btn card-phone"
-                title="Hotline: 0795 277 227"
-                aria-label="Điện thoại"
-              >
-                <img
-                  src="https://img.icons8.com/color/48/phone.png"
-                  alt="Điện thoại"
-                />
-              </button>
             </div>
 
             <!-- Skills Showcase Dashboard directly in Hero -->
@@ -968,6 +983,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <!-- Application Logic (Static & Module compatible) -->
-    <script type="module" src="app.js"></script>
+    <script type="module" src="app.js?v=2.2"></script>
   </body>
 </html>
