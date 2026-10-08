@@ -35,6 +35,7 @@ import {
   Github,
   Facebook,
   Instagram,
+  Linkedin,
   ExternalLink,
   Code2,
   Copy,
@@ -568,24 +569,206 @@ export default function ProfilePage() {
     ring2.rotation.x = Math.PI / 1.8;
     orbitRingGroup.add(ring2);
 
-    // Orbiting 3D Badges (Halo orbit - Never overlaps cat face!)
-    const textureLoader = new THREE.TextureLoader();
+    // 3D Coding Cosmos Orbiting Badges (Canvas-Generated 256x256 - Zero Black Texture Guarantee)
+    const createBadgeTexture = (name: string) => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return new THREE.CanvasTexture(canvas);
+
+      const cx = 128;
+      const cy = 128;
+      const r = 118;
+
+      let gradStart = "#1e293b";
+      let gradEnd = "#0f172a";
+      let rimColor = "#38bdf8";
+      let label = name;
+
+      if (name.includes("Google") || name.includes("AI Riser")) {
+        gradStart = "#ffffff";
+        gradEnd = "#e0f2fe";
+        rimColor = "#4285f4";
+        label = "GOOGLE AI";
+      } else if (name.includes("Kaggle")) {
+        gradStart = "#0284c7";
+        gradEnd = "#082f49";
+        rimColor = "#38bdf8";
+        label = "KAGGLE";
+      } else if (name.includes("LinkedIn")) {
+        gradStart = "#0a66c2";
+        gradEnd = "#073c72";
+        rimColor = "#60a5fa";
+        label = "LINKEDIN";
+      } else if (name.includes("VS Code")) {
+        gradStart = "#007acc";
+        gradEnd = "#00284d";
+        rimColor = "#38bdf8";
+        label = "VS CODE";
+      } else if (name.includes("Python")) {
+        gradStart = "#1e3a5f";
+        gradEnd = "#0b192c";
+        rimColor = "#facc15";
+        label = "PYTHON";
+      } else if (name.includes("React")) {
+        gradStart = "#1e293b";
+        gradEnd = "#0f172a";
+        rimColor = "#61dafb";
+        label = "REACT 3D";
+      } else if (name.includes("TypeScript")) {
+        gradStart = "#1d4ed8";
+        gradEnd = "#172554";
+        rimColor = "#60a5fa";
+        label = "TYPESCRIPT";
+      }
+
+      const bgGrad = ctx.createRadialGradient(cx, cy - 25, 20, cx, cy, r);
+      bgGrad.addColorStop(0, gradStart);
+      bgGrad.addColorStop(1, gradEnd);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = bgGrad;
+      ctx.fill();
+
+      ctx.lineWidth = 10;
+      ctx.strokeStyle = rimColor;
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r - 12, 0, Math.PI * 2);
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
+      ctx.stroke();
+
+      ctx.save();
+      ctx.translate(cx, cy - 14);
+
+      if (name.includes("Google") || name.includes("AI Riser")) {
+        ctx.lineWidth = 18;
+        ctx.beginPath();
+        ctx.arc(0, 0, 42, -Math.PI * 0.25, Math.PI * 0.25);
+        ctx.strokeStyle = "#4285f4";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 42, Math.PI * 0.25, Math.PI * 0.75);
+        ctx.strokeStyle = "#34a853";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 42, Math.PI * 0.75, Math.PI * 1.25);
+        ctx.strokeStyle = "#fbbc05";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(0, 0, 42, Math.PI * 1.25, Math.PI * 1.75);
+        ctx.strokeStyle = "#ea4335";
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(44, 0);
+        ctx.lineWidth = 18;
+        ctx.strokeStyle = "#4285f4";
+        ctx.stroke();
+      } else if (name.includes("Kaggle")) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 84px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("K", 0, 4);
+      } else if (name.includes("LinkedIn")) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 78px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("in", 0, 2);
+      } else if (name.includes("VS Code")) {
+        ctx.fillStyle = "#38bdf8";
+        ctx.beginPath();
+        ctx.moveTo(-36, -36);
+        ctx.lineTo(38, -44);
+        ctx.lineTo(16, -16);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#0ea5e9";
+        ctx.beginPath();
+        ctx.moveTo(-36, 36);
+        ctx.lineTo(38, 44);
+        ctx.lineTo(16, 16);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.moveTo(38, -44);
+        ctx.lineTo(38, 44);
+        ctx.lineTo(10, 0);
+        ctx.closePath();
+        ctx.fill();
+      } else if (name.includes("Python")) {
+        ctx.fillStyle = "#facc15";
+        ctx.font = "900 68px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("Py", 0, 2);
+      } else if (name.includes("React")) {
+        ctx.strokeStyle = "#61dafb";
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 50, 18, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 50, 18, Math.PI / 3, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.ellipse(0, 0, 50, 18, -Math.PI / 3, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = "#61dafb";
+        ctx.beginPath();
+        ctx.arc(0, 0, 10, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (name.includes("TypeScript")) {
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 64px sans-serif";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText("TS", 0, 4);
+      } else {
+        ctx.fillStyle = "#facc15";
+        ctx.beginPath();
+        ctx.arc(0, 0, 28, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "900 23px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+      ctx.shadowBlur = 8;
+      ctx.fillText(label, cx, cy + 82);
+
+      const canvasTexture = new THREE.CanvasTexture(canvas);
+      canvasTexture.needsUpdate = true;
+      return canvasTexture;
+    };
+
     const coinR = isMobile ? 0.28 : 0.32;
     const badgeCoinGeo = new THREE.CylinderGeometry(coinR, coinR, 0.06, 32);
-    const rimGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
-    const rimTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
-    const rimGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
+    const rimGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.75, roughness: 0.25, emissive: 0x452200 });
+    const rimTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25, emissive: 0x032742 });
+    const rimGreen = new THREE.MeshStandardMaterial({ color: 0x10b981, metalness: 0.75, roughness: 0.25, emissive: 0x023620 });
 
     const rx = isMobile ? 3.3 : 3.7;
     const rz = isMobile ? 2.1 : 2.4;
 
     const cosmosBadges = [
-      { name: "Top 500 AI Riser VN", logo: "https://img.icons8.com/color/96/google-logo.png", speed: 0.0028, isAward: true, speech: "Meo! Top 500 AI Riser Vietnam của Google nè! 🏆🐾" },
-      { name: "5-Day Vibe Coding", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg", speed: -0.0025, isAward: true, speech: "Meo! Khóa Vibe Coding AI Agents Kaggle & Google siêu đỉnh! ⚡🐾" },
-      { name: "VS Code", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg", speed: 0.0024, isIDE: true, speech: "Meo! VS Code là IDE ruột của Quang để build AI & Web! 💻🐾" },
-      { name: "Python", logo: "https://img.icons8.com/color/96/python.png", speed: -0.0022, speech: "Meo! Python dùng huấn luyện Deep Learning & AI Agents! 🐍🐾" },
-      { name: "React", logo: "https://img.icons8.com/color/96/react-native.png", speed: 0.0026, isIDE: true, speech: "Meo! React và Three.js tạo nên trải nghiệm 3D mượt mà! ⚛️🐾" },
-      { name: "TypeScript", logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg", speed: -0.0023, speech: "Meo! TypeScript code an toàn kiểu dữ liệu, không lo bug! 🛡️🐾" },
+      { name: "Top 500 AI Riser VN", speed: 0.0028, isAward: true, speech: "Meo! Top 500 AI Riser Vietnam của Google nè! 🏆🐾" },
+      { name: "5-Day Vibe Coding", speed: -0.0025, isAward: true, speech: "Meo! Khóa Vibe Coding AI Agents Kaggle & Google siêu đỉnh! ⚡🐾" },
+      { name: "LinkedIn", speed: 0.003, isIDE: true, url: "https://www.linkedin.com/in/nguyenduyquangdev/", speech: "Meo! Kết nối với Quang trên LinkedIn nhé! 💼🐾" },
+      { name: "VS Code", speed: 0.0024, isIDE: true, speech: "Meo! VS Code là IDE ruột của Quang để build AI & Web! 💻🐾" },
+      { name: "Python", speed: -0.0022, speech: "Meo! Python dùng huấn luyện Deep Learning & AI Agents! 🐍🐾" },
+      { name: "React", speed: 0.0026, isIDE: true, speech: "Meo! React và Three.js tạo nên trải nghiệm 3D mượt mà! ⚛️🐾" },
+      { name: "TypeScript", speed: -0.0023, speech: "Meo! TypeScript code an toàn kiểu dữ liệu, không lo bug! 🛡️🐾" },
     ];
 
     const badgeMeshes: any[] = [];
@@ -595,13 +778,21 @@ export default function ProfilePage() {
       rim.rotation.x = Math.PI / 2;
       coin.add(rim);
 
-      const texture = textureLoader.load(b.logo);
+      const texture = createBadgeTexture(b.name);
       const front = new THREE.Mesh(
-        new THREE.CircleGeometry(coinR * 0.9, 32),
-        new THREE.MeshBasicMaterial({ map: texture, transparent: true })
+        new THREE.CircleGeometry(coinR * 0.92, 32),
+        new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide })
       );
       front.position.z = 0.035;
       coin.add(front);
+
+      const back = new THREE.Mesh(
+        new THREE.CircleGeometry(coinR * 0.92, 32),
+        new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide })
+      );
+      back.position.z = -0.035;
+      back.rotation.y = Math.PI;
+      coin.add(back);
 
       const theta = (idx / cosmosBadges.length) * Math.PI * 2;
       coin.position.set(
@@ -856,87 +1047,101 @@ export default function ProfilePage() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="https://www.linkedin.com/in/nguyenduyquangdev/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="min-h-[42px] px-3.5 py-1.5 flex items-center justify-center gap-1.5 rounded-xl bg-white border border-sky-300 text-[#0a66c2] hover:bg-[#0a66c2] hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
+                  title="LinkedIn: Nguyễn Duy Quang"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>LinkedIn</span>
+                </a>
                 <a
                   href="https://github.com/Wothing0406"
                   target="_blank"
                   rel="noreferrer"
-                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-800 hover:border-slate-800 hover:bg-slate-50 active:scale-95 transition-all shadow-xs"
-                  title="GitHub"
+                  className="min-h-[42px] px-3.5 py-1.5 flex items-center justify-center gap-1.5 rounded-xl bg-white border border-slate-300 text-slate-800 hover:bg-slate-900 hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
+                  title="GitHub: Wothing0406"
                   aria-label="GitHub"
                 >
-                  <Github className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                  <Github className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>GitHub</span>
                 </a>
                 <a
-                  href="https://www.facebook.com/NgDoQ"
+                  href="https://www.facebook.com/nguyenduyquang.dev"
                   target="_blank"
                   rel="noreferrer"
-                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-blue-200 text-blue-600 hover:border-blue-600 hover:bg-blue-50 active:scale-95 transition-all shadow-xs"
-                  title="Facebook"
+                  className="min-h-[42px] px-3.5 py-1.5 flex items-center justify-center gap-1.5 rounded-xl bg-white border border-blue-300 text-blue-600 hover:bg-blue-600 hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
+                  title="Facebook: Nguyễn Duy Quang"
                   aria-label="Facebook"
                 >
-                  <Facebook className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                  <Facebook className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>Facebook</span>
                 </a>
                 <a
                   href="https://www.instagram.com/quangcogo0406/"
                   target="_blank"
                   rel="noreferrer"
-                  className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded-2xl bg-white border border-pink-200 text-pink-600 hover:border-pink-600 hover:bg-pink-50 active:scale-95 transition-all shadow-xs"
-                  title="Instagram"
+                  className="min-h-[42px] px-3.5 py-1.5 flex items-center justify-center gap-1.5 rounded-xl bg-white border border-pink-300 text-pink-600 hover:bg-pink-600 hover:text-white active:scale-95 transition-all text-xs font-bold shadow-xs"
+                  title="Instagram: quangcogo0406"
                   aria-label="Instagram"
                 >
-                  <Instagram className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+                  <Instagram className="w-4 h-4 shrink-0" strokeWidth={2} />
+                  <span>Instagram</span>
                 </a>
               </div>
             </div>
 
             {/* Bento Highlights Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-br from-emerald-50/90 to-blue-50/80 border border-blue-200/60 shadow-xs hover:border-blue-400 transition-all">
-                <span className="p-2.5 rounded-xl bg-blue-100 text-blue-600 shrink-0">
-                  <Trophy className="w-5 h-5 shrink-0" strokeWidth={2} />
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-blue-300 shadow-sm hover:border-blue-500 transition-all">
+                <span className="p-2.5 rounded-xl bg-blue-100 text-blue-700 shrink-0">
+                  <Trophy className="w-5 h-5 shrink-0" strokeWidth={2.2} />
                 </span>
                 <div>
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[11px] font-extrabold text-blue-700 uppercase tracking-wider block">
                     #BuildwithGoogleAI
                   </span>
-                  <h4 className="text-sm font-bold text-emerald-950">Top 500 AI Riser VN</h4>
+                  <h4 className="text-sm font-extrabold text-slate-950">Top 500 AI Riser VN</h4>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-br from-cyan-50/90 to-amber-50/80 border border-cyan-200/60 shadow-xs hover:border-cyan-400 transition-all">
-                <span className="p-2.5 rounded-xl bg-amber-100 text-amber-600 shrink-0">
-                  <Zap className="w-5 h-5 shrink-0" strokeWidth={2} />
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-sky-300 shadow-sm hover:border-sky-500 transition-all">
+                <span className="p-2.5 rounded-xl bg-sky-100 text-sky-700 shrink-0">
+                  <Zap className="w-5 h-5 shrink-0" strokeWidth={2.2} />
                 </span>
                 <div>
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[11px] font-extrabold text-sky-700 uppercase tracking-wider block">
                     Kaggle & Google
                   </span>
-                  <h4 className="text-sm font-bold text-emerald-950">5-Day Vibe Coding</h4>
+                  <h4 className="text-sm font-extrabold text-slate-950">5-Day Vibe Coding</h4>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/80 border border-emerald-200/60 shadow-xs hover:border-emerald-400 transition-all">
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-emerald-300 shadow-sm hover:border-emerald-500 transition-all">
                 <span className="p-2.5 rounded-xl bg-emerald-100 text-emerald-700 shrink-0">
-                  <Medal className="w-5 h-5 shrink-0" strokeWidth={2} />
+                  <Medal className="w-5 h-5 shrink-0" strokeWidth={2.2} />
                 </span>
                 <div>
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[11px] font-extrabold text-emerald-700 uppercase tracking-wider block">
                     KHKT Cấp Trường
                   </span>
-                  <h4 className="text-sm font-bold text-emerald-950">Giải Nhất STEM 2026</h4>
+                  <h4 className="text-sm font-extrabold text-slate-950">Giải Nhất STEM 2026</h4>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/80 border border-emerald-200/60 shadow-xs hover:border-emerald-400 transition-all">
-                <span className="p-2.5 rounded-xl bg-sky-100 text-sky-700 shrink-0">
-                  <Award className="w-5 h-5 shrink-0" strokeWidth={2} />
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border-2 border-amber-300 shadow-sm hover:border-amber-500 transition-all">
+                <span className="p-2.5 rounded-xl bg-amber-100 text-amber-700 shrink-0">
+                  <Award className="w-5 h-5 shrink-0" strokeWidth={2.2} />
                 </span>
                 <div>
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block">
+                  <span className="text-[11px] font-extrabold text-amber-700 uppercase tracking-wider block">
                     KHKT Cấp TP
                   </span>
-                  <h4 className="text-sm font-bold text-emerald-950">Giải Ba Đà Nẵng 2026</h4>
+                  <h4 className="text-sm font-extrabold text-slate-950">Giải Ba Đà Nẵng 2026</h4>
                 </div>
               </div>
             </div>
@@ -1446,7 +1651,16 @@ export default function ProfilePage() {
             </div>
 
             {/* Social Network Links */}
-            <div className="pt-2 border-t border-slate-100 flex items-center justify-center gap-2">
+            <div className="pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-2">
+              <a
+                href="https://www.linkedin.com/in/nguyenduyquangdev/"
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-[#0a66c2] text-xs font-bold inline-flex items-center gap-1.5 transition-all"
+              >
+                <Linkedin className="w-3.5 h-3.5" />
+                <span>LinkedIn</span>
+              </a>
               <a
                 href="https://github.com/Wothing0406"
                 target="_blank"
@@ -1457,7 +1671,7 @@ export default function ProfilePage() {
                 <span>GitHub</span>
               </a>
               <a
-                href="https://www.facebook.com/NgDoQ"
+                href="https://www.facebook.com/nguyenduyquang.dev"
                 target="_blank"
                 rel="noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold inline-flex items-center gap-1.5 transition-all"

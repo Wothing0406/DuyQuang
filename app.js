@@ -206,7 +206,6 @@ const codingCosmosBadges = [
     {
         type: 'award',
         name: 'Top 500 AI Riser Vietnam',
-        logoUrl: 'https://img.icons8.com/color/96/google-logo.png',
         orbitSpeed: 0.0035,
         radius: 2.2,
         inclination: 0.15,
@@ -216,7 +215,6 @@ const codingCosmosBadges = [
     {
         type: 'award',
         name: '5-Day Vibe Coding Kaggle',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kaggle/kaggle-original.svg',
         orbitSpeed: -0.0032,
         radius: 2.1,
         inclination: -0.25,
@@ -224,9 +222,18 @@ const codingCosmosBadges = [
         catSpeech: 'Meo! Chứng nhận 5-Day Vibe Coding Kaggle & Google siêu cháy! Xây dựng AI Agents đỉnh chóp! ⚡🐾'
     },
     {
+        type: 'social',
+        name: 'LinkedIn',
+        orbitSpeed: 0.0033,
+        radius: 2.4,
+        inclination: -0.18,
+        yOffset: -0.15,
+        url: 'https://www.linkedin.com/in/nguyenduyquangdev/',
+        catSpeech: 'Meo! Ghé thăm LinkedIn của Quang để kết nối học thuật và cơ hội hợp tác nhé! 💼🐾'
+    },
+    {
         type: 'ide',
         name: 'VS Code',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg',
         orbitSpeed: 0.0028,
         radius: 2.9,
         inclination: 0.35,
@@ -236,7 +243,6 @@ const codingCosmosBadges = [
     {
         type: 'language',
         name: 'Python',
-        logoUrl: 'https://img.icons8.com/color/96/python.png',
         orbitSpeed: -0.0025,
         radius: 2.7,
         inclination: -0.15,
@@ -246,7 +252,6 @@ const codingCosmosBadges = [
     {
         type: 'framework',
         name: 'React & Three.js',
-        logoUrl: 'https://img.icons8.com/color/96/react-native.png',
         orbitSpeed: 0.003,
         radius: 3.1,
         inclination: 0.2,
@@ -256,7 +261,6 @@ const codingCosmosBadges = [
     {
         type: 'language',
         name: 'TypeScript',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg',
         orbitSpeed: -0.0028,
         radius: 2.5,
         inclination: 0.4,
@@ -266,7 +270,6 @@ const codingCosmosBadges = [
     {
         type: 'framework',
         name: 'PyTorch AI',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg',
         orbitSpeed: 0.0026,
         radius: 2.85,
         inclination: -0.3,
@@ -276,7 +279,6 @@ const codingCosmosBadges = [
     {
         type: 'tool',
         name: 'Docker',
-        logoUrl: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg',
         orbitSpeed: -0.003,
         radius: 3.2,
         inclination: 0.1,
@@ -286,7 +288,6 @@ const codingCosmosBadges = [
     {
         type: 'database',
         name: 'SQL Database',
-        logoUrl: 'https://img.icons8.com/color/96/mysql-logo.png',
         orbitSpeed: 0.0024,
         radius: 2.6,
         inclination: -0.2,
@@ -296,12 +297,12 @@ const codingCosmosBadges = [
     {
         type: 'tool',
         name: 'GitHub',
-        logoUrl: 'https://img.icons8.com/color/96/github.png',
         orbitSpeed: -0.0022,
         radius: 3.0,
         inclination: -0.35,
         yOffset: 0.75,
-        catSpeech: 'Meo! Mã nguồn dự án được lưu trữ và triển khai trực tiếp trên GitHub! 🚀🐾'
+        url: 'https://github.com/Wothing0406',
+        catSpeech: 'Meo! Toàn bộ mã nguồn dự án được lưu trữ và cập nhật trên GitHub! 🚀🐾'
     }
 ];
 
@@ -746,20 +747,277 @@ function initThreeJSMascot() {
     shadowFloor.position.y = -0.44;
     mascotGroup.add(shadowFloor);
 
-    // 8. 3D Coding Cosmos Orbiting Badges (Coins with 3D Depth & Metallic Bevel)
-    const textureLoader = new THREE.TextureLoader();
+    // 8. 3D Coding Cosmos Orbiting Badges (Canvas-Generated 256x256 Textures - Zero Black Texture Guarantee)
+    function createCosmicBadgeTexture(badge) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 256;
+        canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return new THREE.CanvasTexture(canvas);
+
+        const cx = 128;
+        const cy = 128;
+        const r = 118;
+
+        // Custom Radiant Color Scheme for Each Badge
+        let gradStart = '#1e293b';
+        let gradEnd = '#0f172a';
+        let rimColor = '#38bdf8';
+        let label = badge.name;
+
+        if (badge.name.includes('Google') || badge.name.includes('AI Riser')) {
+            gradStart = '#ffffff';
+            gradEnd = '#e0f2fe';
+            rimColor = '#4285f4';
+            label = 'GOOGLE AI';
+        } else if (badge.name.includes('Kaggle')) {
+            gradStart = '#0284c7';
+            gradEnd = '#082f49';
+            rimColor = '#38bdf8';
+            label = 'KAGGLE';
+        } else if (badge.name.includes('LinkedIn')) {
+            gradStart = '#0a66c2';
+            gradEnd = '#073c72';
+            rimColor = '#60a5fa';
+            label = 'LINKEDIN';
+        } else if (badge.name.includes('VS Code')) {
+            gradStart = '#007acc';
+            gradEnd = '#00284d';
+            rimColor = '#38bdf8';
+            label = 'VS CODE';
+        } else if (badge.name.includes('Python')) {
+            gradStart = '#1e3a5f';
+            gradEnd = '#0b192c';
+            rimColor = '#facc15';
+            label = 'PYTHON';
+        } else if (badge.name.includes('React')) {
+            gradStart = '#1e293b';
+            gradEnd = '#0f172a';
+            rimColor = '#61dafb';
+            label = 'REACT 3D';
+        } else if (badge.name.includes('TypeScript')) {
+            gradStart = '#1d4ed8';
+            gradEnd = '#172554';
+            rimColor = '#60a5fa';
+            label = 'TYPESCRIPT';
+        } else if (badge.name.includes('PyTorch')) {
+            gradStart = '#991b1b';
+            gradEnd = '#450a0a';
+            rimColor = '#f97316';
+            label = 'PYTORCH';
+        } else if (badge.name.includes('Docker')) {
+            gradStart = '#0284c7';
+            gradEnd = '#082f49';
+            rimColor = '#38bdf8';
+            label = 'DOCKER';
+        } else if (badge.name.includes('SQL')) {
+            gradStart = '#047857';
+            gradEnd = '#064e3b';
+            rimColor = '#34d399';
+            label = 'SQL DB';
+        } else if (badge.name.includes('GitHub')) {
+            gradStart = '#24292e';
+            gradEnd = '#0f1419';
+            rimColor = '#e2e8f0';
+            label = 'GITHUB';
+        }
+
+        // 1. Draw Vibrant Base Disc with Soft Gradient
+        const bgGrad = ctx.createRadialGradient(cx, cy - 25, 20, cx, cy, r);
+        bgGrad.addColorStop(0, gradStart);
+        bgGrad.addColorStop(1, gradEnd);
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fillStyle = bgGrad;
+        ctx.fill();
+
+        // 2. Beveled Metallic Ring
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = rimColor;
+        ctx.stroke();
+
+        // Inner glowing border
+        ctx.beginPath();
+        ctx.arc(cx, cy, r - 12, 0, Math.PI * 2);
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+        ctx.stroke();
+
+        // 3. Draw High-Contrast Vector Emblem
+        ctx.save();
+        ctx.translate(cx, cy - 14);
+
+        if (badge.name.includes('Google') || badge.name.includes('AI Riser')) {
+            // Google 4-color Ring & Horizontal Bar
+            ctx.lineWidth = 18;
+            // Blue
+            ctx.beginPath();
+            ctx.arc(0, 0, 42, -Math.PI * 0.25, Math.PI * 0.25);
+            ctx.strokeStyle = '#4285f4';
+            ctx.stroke();
+            // Green
+            ctx.beginPath();
+            ctx.arc(0, 0, 42, Math.PI * 0.25, Math.PI * 0.75);
+            ctx.strokeStyle = '#34a853';
+            ctx.stroke();
+            // Yellow
+            ctx.beginPath();
+            ctx.arc(0, 0, 42, Math.PI * 0.75, Math.PI * 1.25);
+            ctx.strokeStyle = '#fbbc05';
+            ctx.stroke();
+            // Red
+            ctx.beginPath();
+            ctx.arc(0, 0, 42, Math.PI * 1.25, Math.PI * 1.75);
+            ctx.strokeStyle = '#ea4335';
+            ctx.stroke();
+            // Center Bar
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(44, 0);
+            ctx.lineWidth = 18;
+            ctx.strokeStyle = '#4285f4';
+            ctx.stroke();
+        } else if (badge.name.includes('Kaggle')) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 84px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('K', 0, 4);
+        } else if (badge.name.includes('LinkedIn')) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 78px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('in', 0, 2);
+        } else if (badge.name.includes('VS Code')) {
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath();
+            ctx.moveTo(-36, -36);
+            ctx.lineTo(38, -44);
+            ctx.lineTo(16, -16);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#0ea5e9';
+            ctx.beginPath();
+            ctx.moveTo(-36, 36);
+            ctx.lineTo(38, 44);
+            ctx.lineTo(16, 16);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(38, -44);
+            ctx.lineTo(38, 44);
+            ctx.lineTo(10, 0);
+            ctx.closePath();
+            ctx.fill();
+        } else if (badge.name.includes('Python')) {
+            ctx.fillStyle = '#facc15';
+            ctx.font = '900 68px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Py', 0, 2);
+        } else if (badge.name.includes('React')) {
+            ctx.strokeStyle = '#61dafb';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 50, 18, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 50, 18, Math.PI / 3, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 50, 18, -Math.PI / 3, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = '#61dafb';
+            ctx.beginPath();
+            ctx.arc(0, 0, 10, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (badge.name.includes('TypeScript')) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 64px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('TS', 0, 4);
+        } else if (badge.name.includes('PyTorch')) {
+            ctx.fillStyle = '#f97316';
+            ctx.beginPath();
+            ctx.arc(0, 10, 32, 0, Math.PI);
+            ctx.lineTo(-24, -22);
+            ctx.lineTo(0, -44);
+            ctx.lineTo(14, -20);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = '#fef08a';
+            ctx.beginPath();
+            ctx.arc(18, -32, 7, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (badge.name.includes('Docker')) {
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(-34, -22, 18, 14);
+            ctx.fillRect(-12, -22, 18, 14);
+            ctx.fillRect(10, -22, 18, 14);
+            ctx.fillRect(-23, -40, 18, 14);
+            ctx.fillRect(-1, -40, 18, 14);
+            ctx.beginPath();
+            ctx.arc(0, 12, 42, 0, Math.PI);
+            ctx.lineTo(46, 12);
+            ctx.lineTo(50, -4);
+            ctx.closePath();
+            ctx.fill();
+        } else if (badge.name.includes('SQL')) {
+            ctx.fillStyle = '#34d399';
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 3.5;
+            for (let dy of [-22, 2, 26]) {
+                ctx.beginPath();
+                ctx.ellipse(0, dy, 38, 13, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+        } else if (badge.name.includes('GitHub')) {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '900 68px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Git', 0, 2);
+        } else {
+            ctx.fillStyle = '#facc15';
+            ctx.beginPath();
+            ctx.arc(0, 0, 28, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.restore();
+
+        // 4. Crisp White Label on bottom
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 23px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+        ctx.shadowBlur = 8;
+        ctx.fillText(label, cx, cy + 82);
+
+        const canvasTexture = new THREE.CanvasTexture(canvas);
+        canvasTexture.needsUpdate = true;
+        return canvasTexture;
+    }
+
     const coinR = isMobile ? 0.30 : 0.34;
     const badgeCoinGeo = new THREE.CylinderGeometry(coinR, coinR, 0.06, 32);
-    const coinRimMatGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.2 });
-    const coinRimMatTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25 });
-    const coinRimMatGreen = new THREE.MeshStandardMaterial({ color: 0x6da763, metalness: 0.6, roughness: 0.3 });
+    const coinRimMatGold = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.75, roughness: 0.25, emissive: 0x452200 });
+    const coinRimMatTech = new THREE.MeshStandardMaterial({ color: 0x0ea5e9, metalness: 0.75, roughness: 0.25, emissive: 0x032742 });
+    const coinRimMatGreen = new THREE.MeshStandardMaterial({ color: 0x10b981, metalness: 0.75, roughness: 0.25, emissive: 0x023620 });
 
     const orbitRadiusX = isMobile ? 3.3 : 3.8;
     const orbitRadiusZ = isMobile ? 2.1 : 2.5;
 
     codingCosmosBadges.forEach((badge, i) => {
         const isAward = badge.type === 'award';
-        const isIDE = badge.type === 'ide';
+        const isIDE = badge.type === 'ide' || badge.type === 'social';
 
         const coinGroup = new THREE.Group();
 
@@ -771,17 +1029,25 @@ function initThreeJSMascot() {
         rimMesh.rotation.x = Math.PI / 2;
         coinGroup.add(rimMesh);
 
-        // Front texture plane
-        const texture = textureLoader.load(badge.logoUrl);
-        texture.minFilter = THREE.LinearMipmapLinearFilter;
-        texture.generateMipmaps = true;
+        // Canvas-Generated Texture (Zero black textures, 100% reliable)
+        const badgeTexture = createCosmicBadgeTexture(badge);
 
+        // Front Face
         const frontMesh = new THREE.Mesh(
-            new THREE.CircleGeometry(coinR * 0.9, 32),
-            new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.FrontSide })
+            new THREE.CircleGeometry(coinR * 0.92, 32),
+            new THREE.MeshBasicMaterial({ map: badgeTexture, side: THREE.FrontSide })
         );
         frontMesh.position.z = 0.035;
         coinGroup.add(frontMesh);
+
+        // Back Face (Textured on both sides so coin is never dark when rotating!)
+        const backMesh = new THREE.Mesh(
+            new THREE.CircleGeometry(coinR * 0.92, 32),
+            new THREE.MeshBasicMaterial({ map: badgeTexture, side: THREE.FrontSide })
+        );
+        backMesh.position.z = -0.035;
+        backMesh.rotation.y = Math.PI;
+        coinGroup.add(backMesh);
 
         const total = codingCosmosBadges.length;
         const initialTheta = (i / total) * Math.PI * 2;
@@ -859,6 +1125,13 @@ function initThreeJSMascot() {
                     gsap.to(headGroup.rotation, {
                         z: 0.22, duration: 0.18, yoyo: true, repeat: 1
                     });
+                }
+
+                // If badge has link (e.g. LinkedIn, GitHub), open on click
+                if (info.url) {
+                    setTimeout(() => {
+                        window.open(info.url, '_blank');
+                    }, 500);
                 }
             } else {
                 // Clicked Tabby Cat itself!
@@ -1582,16 +1855,28 @@ function initGSAPAnimations() {
         stagger: 0.08,
         delay: 0.3,
         duration: 0.8,
-        ease: 'power2.out'
+        ease: 'power2.out',
+        clearProps: 'all'
     });
 
-    gsap.from('.contact-circle-btn', {
+    gsap.from('.contact-cta-pill', {
         opacity: 0,
-        scale: 0.7,
+        y: 15,
+        stagger: 0.08,
+        delay: 0.35,
+        duration: 0.7,
+        ease: 'power2.out',
+        clearProps: 'all'
+    });
+
+    gsap.from('.contact-social-pill', {
+        opacity: 0,
+        scale: 0.85,
         stagger: 0.06,
         delay: 0.45,
         duration: 0.7,
-        ease: 'back.out(2)'
+        ease: 'back.out(1.8)',
+        clearProps: 'all'
     });
 
     gsap.from('.skills-dashboard-cute', {
